@@ -1,3 +1,5 @@
+---
+
 # E-Commerce Product Ontology (OWL 2 DL)
 
 A production-quality OWL 2 DL ontology modelling an online shopping platform domain.
@@ -8,60 +10,47 @@ A production-quality OWL 2 DL ontology modelling an online shopping platform dom
 |---|---|
 | OWL Profile | OWL 2 DL |
 | Serialisation | RDF/XML |
-| Reasoner tested | HermiT 1.4, Pellet 2.x |
-| Named classes | 40 |
-| Object properties | 23 |
-| Data properties | 26 |
-| Named individuals | 53 |
-| Restrictions | 23 |
-| Property chains | 3 |
+| Reasoner tested | HermiT 1.4 |
+| Named classes | 25 |
+| Object properties | 9 |
+| Data properties | 13 |
+| Named individuals | 28 |
+| Restrictions | 8 |
+| Property chains | 1 |
 
 ## OWL 2 DL Features Demonstrated
 
-All 40 major OWL 2 DL constructs are present with domain-justified semantics:
+**Class axioms:** equivalentClass, subClassOf, intersectionOf, unionOf, AllDisjointClasses
 
-**Class axioms:** `equivalentClass`, `subClassOf`, `intersectionOf`, `unionOf`, `complementOf`, `oneOf`, `disjointUnionOf`, `AllDisjointClasses`, `disjointWith`
+**Restrictions:** someValuesFrom, hasValue, minQualifiedCardinality, qualifiedCardinality
 
-**Restrictions:** `someValuesFrom`, `allValuesFrom`, `hasValue`, `minQualifiedCardinality`, `maxQualifiedCardinality`, `qualifiedCardinality`, `minCardinality`
+**Property characteristics:** Functional, Transitive, Asymmetric, Irreflexive, inverseOf, propertyChainAxiom
 
-**Property characteristics:** Functional, InverseFunctional, Transitive, Symmetric, Asymmetric, Reflexive, Irreflexive, `inverseOf`
-
-**Property structure:** `subPropertyOf` (object + data), property chain axioms (3 chains)
-
-**OWL 2 only:** `hasKey`, `NegativePropertyAssertion`, `disjointUnionOf`, DataOneOf, `AllDifferent`, `differentFrom`, `sameAs`
-
-**Annotations:** Dublin Core, SKOS (definition, note, example), custom annotation properties, `owl:deprecated`, `rdfs:seeAlso`, `owl:versionIRI`
+**OWL 2 only:** AllDifferent, datatype facets (minInclusive, maxExclusive)
 
 ## Domain Coverage
 
-- **Product taxonomy:** Electronics (Laptop, Smartphone, Tablet, Headphones, SmartWatch) + Accessories (Cable, Charger, Case)
-- **Defined classes (auto-classified by reasoner):** PremiumProduct (≥$1000), BudgetProduct (<$300), MidRangeProduct ($300–999), GamingLaptop, GamerCustomer, FrequentBuyer, LoyalCustomer, HighRatedProduct, DiscountedProduct, VerifiedReview, NonPremiumProduct, UnverifiedReview, AppleExclusiveProduct, DigitalPaymentOrder, SingleProductOrder, MultiProductOrder, PlatformBrand, PlatformSeller
-- **Entities:** 5 brands, 13 categories, 10 products, 5 customers, 2 sellers, 5 payment methods, 6 orders, 6 reviews
+Product taxonomy: Electronics (Laptop, Smartphone, Headphones, SmartWatch) + Accessories (Charger, Case, Cable)
 
-## Property Chains
+Defined classes (auto-classified by reasoner): PremiumProduct, BudgetProduct, DiscountedProduct, HighRatedProduct, GamingLaptop, GamerCustomer, FrequentBuyer, LoyalCustomer, VerifiedReview
 
-| Chain | Semantics |
-|---|---|
-| `purchases ∘ manufacturedBy → prefersBrand` | Customer's brand preference inferred from purchase history |
-| `placesOrder ∘ containsProduct → indirectlyPurchases` | Bridges order-level and product-level purchase records |
-| `writesReview ∘ reviewsProduct → hasReviewedProduct` | Directly links customer to reviewed products |
+Entities: 5 brands, 6 products, 4 customers, 4 orders, 2 reviews, 4 payment methods
 
-## Loading in Protégé
+## Property Chain
 
-1. Open Protégé 5.6 Desktop
-2. File → Open → select `ecommerce.owl`
+purchases o manufacturedBy → prefersBrand — Customer brand preference inferred from purchase history
+
+## Loading in Protege
+
+1. Open Protege 5.6 Desktop
+2. File → Open → select ecommerce_simple.owl
 3. Reasoner → HermiT 1.4 → Start Reasoner
 4. DL Query examples:
-   - `ec:LoyalCustomer` → returns Customer_Ali, Customer_Riya
-   - `ec:PremiumProduct` → returns MacBookPro, iPhone15Pro, ROGZephyrus, iPadPro
-   - `ec:SingleProductOrder` → returns Order005
-   - `ec:FrequentBuyer` → returns Customer_Ali, Customer_Lena, Customer_Riya
-
-## Author
-
-Mohd Khan  
-University of Campania Luigi Vanvitelli  
-MIRAMARE EU Project
+   - LoyalCustomer → Ali Hassan, Riya Sharma
+   - PremiumProduct → MacBookPro, iPhone15Pro, ROGZephyrus
+   - FrequentBuyer → Ali Hassan, Lena Mueller, Riya Sharma
+   - DiscountedProduct → GalaxyS24Ultra, SonyHeadphones, AnkerCharger
+   - VerifiedReview → Review001, Review002
 
 ## License
 
