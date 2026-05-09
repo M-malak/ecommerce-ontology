@@ -2,7 +2,7 @@
 
 # E-Commerce Product Ontology (OWL 2 DL)
 
-A production-quality OWL 2 DL ontology modelling an online shopping platform domain.
+An OWL 2 DL ontology modelling an online shopping platform domain.
 
 ## Overview
 
@@ -11,46 +11,76 @@ A production-quality OWL 2 DL ontology modelling an online shopping platform dom
 | OWL Profile | OWL 2 DL |
 | Serialisation | RDF/XML |
 | Reasoner tested | HermiT 1.4 |
-| Named classes | 25 |
-| Object properties | 9 |
-| Data properties | 13 |
-| Named individuals | 28 |
-| Restrictions | 8 |
+| Named classes | 31 |
+| Object properties | 12 |
+| Data properties | 11 |
+| Named individuals | 25 |
+| Equivalent class axioms | 9 |
 | Property chains | 1 |
 
-## OWL 2 DL Features Demonstrated
+## Classes (31)
 
-**Class axioms:** equivalentClass, subClassOf, intersectionOf, unionOf, AllDisjointClasses
+**Core:** Brand, Category, Customer, Seller, Order, Product, Review, PaymentMethod
 
-**Restrictions:** someValuesFrom, hasValue, minQualifiedCardinality, qualifiedCardinality
+**Payment subclasses:** CreditCard, PayPal, BankTransfer, CryptoCurrency
 
-**Property characteristics:** Functional, Transitive, Asymmetric, Irreflexive, inverseOf, propertyChainAxiom
+**Product subclasses:** Electronics, Accessories, Laptop, Smartphone, Tablet, Headphones, SmartWatch, Cable, Charger, Case
 
-**OWL 2 only:** AllDifferent, datatype facets (minInclusive, maxExclusive)
+**Defined classes (auto-classified by reasoner):** PremiumProduct, BudgetProduct, DiscountedProduct, HighRatedProduct, GamingLaptop, GamerCustomer, FrequentBuyer, LoyalCustomer, VerifiedReview
 
-## Domain Coverage
+## Object Properties (12)
 
-Product taxonomy: Electronics (Laptop, Smartphone, Headphones, SmartWatch) + Accessories (Charger, Case, Cable)
+purchases, isPurchasedBy, manufacturedBy, manufactures, placesOrder, isOrderOf, containsProduct, usesPaymentMethod, reviewsProduct, hasReview, hasSubcategory, prefersBrand
 
-Defined classes (auto-classified by reasoner): PremiumProduct, BudgetProduct, DiscountedProduct, HighRatedProduct, GamingLaptop, GamerCustomer, FrequentBuyer, LoyalCustomer, VerifiedReview
+## Data Properties (11)
 
-Entities: 5 brands, 6 products, 4 customers, 4 orders, 2 reviews, 4 payment methods
+hasPrice, hasDiscountPercentage, hasAggregateRating, hasRating, hasSKU, hasOrderID, hasTotalAmount, hasDeliveryStatus, hasOrderCount, isGamingLaptop, isVerifiedPurchase
+
+## Individuals (25)
+
+**Brands:** Apple, Samsung, Asus, Sony, Anker
+
+**Products:** MacBookPro, iPhone15Pro, GalaxyS24Ultra, ROGZephyrus, SonyHeadphones, AnkerCharger
+
+**Customers:** Customer_Ali, Customer_Sara, Customer_Riya, Customer_Lena
+
+**Orders:** Order001, Order002, Order003, Order004
+
+**Payment methods:** PM_Visa, PM_Mastercard, PM_PayPal, PM_Bitcoin
+
+**Reviews:** Review001, Review002
+
+## OWL 2 DL Features
+
+- equivalentClass, intersectionOf, unionOf, subClassOf
+- someValuesFrom, hasValue, minQualifiedCardinality, qualifiedCardinality
+- FunctionalProperty, AsymmetricProperty, TransitiveProperty, IrreflexiveProperty
+- owl:inverseOf, owl:propertyChainAxiom, owl:AllDifferent
+- Datatype facets: xsd:minInclusive, xsd:maxExclusive
 
 ## Property Chain
 
-purchases o manufacturedBy → prefersBrand — Customer brand preference inferred from purchase history
+purchases o manufacturedBy → prefersBrand
+
+If a Customer purchases a Product manufactured by a Brand, the reasoner infers the Customer prefersBrand that Brand.
+
+## Reasoning Results (HermiT 1.4)
+
+| DL Query | Result |
+|---|---|
+| LoyalCustomer | Customer_Ali, Customer_Riya |
+| FrequentBuyer | Customer_Ali, Customer_Lena, Customer_Riya |
+| PremiumProduct | MacBookPro, iPhone15Pro, ROGZephyrus |
+| DiscountedProduct | GalaxyS24Ultra, SonyHeadphones, AnkerCharger |
+| GamingLaptop | ROGZephyrus |
+| VerifiedReview | Review001, Review002 |
 
 ## Loading in Protege
 
 1. Open Protege 5.6 Desktop
 2. File → Open → select ecommerce_simple.owl
 3. Reasoner → HermiT 1.4 → Start Reasoner
-4. DL Query examples:
-   - LoyalCustomer → Ali Hassan, Riya Sharma
-   - PremiumProduct → MacBookPro, iPhone15Pro, ROGZephyrus
-   - FrequentBuyer → Ali Hassan, Lena Mueller, Riya Sharma
-   - DiscountedProduct → GalaxyS24Ultra, SonyHeadphones, AnkerCharger
-   - VerifiedReview → Review001, Review002
+4. Go to DL Query tab, tick Instances, run queries above
 
 ## License
 
