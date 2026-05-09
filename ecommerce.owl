@@ -1,684 +1,173 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE rdf:RDF [
-    <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
-    <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
-    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
-    <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY dc   "http://purl.org/dc/elements/1.1/" >
-    <!ENTITY skos "http://www.w3.org/2004/02/skos/core#" >
-    <!ENTITY ec   "http://www.example.org/ecommerce#" >
-]>
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.example.org/ecommerce#"
+     xml:base="http://www.example.org/ecommerce"
+     xmlns:ec="http://www.example.org/ecommerce#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 
-<!--
-  ================================================================
-  E-Commerce Product Ontology  |  OWL 2 DL  |  Version 2.0
-  IRI: http://www.example.org/ecommerce
-  Author: Mohd Khan - University of Campania Luigi Vanvitelli
-  Reasoner: HermiT 1.4 / Pellet 2.x (Protege 5.6 Desktop)
-  ================================================================
--->
-
-<rdf:RDF
-    xmlns:owl ="http://www.w3.org/2002/07/owl#"
-    xmlns:xsd ="http://www.w3.org/2001/XMLSchema#"
-    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-    xmlns:rdf ="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:dc  ="http://purl.org/dc/elements/1.1/"
-    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
-    xmlns:ec  ="http://www.example.org/ecommerce#"
-    xml:base  ="http://www.example.org/ecommerce">
-
-  <!-- ============================================================
-       ONTOLOGY HEADER
-       ============================================================ -->
   <owl:Ontology rdf:about="http://www.example.org/ecommerce">
-    <owl:versionIRI rdf:resource="http://www.example.org/ecommerce/2.0"/>
-    <owl:versionInfo rdf:datatype="&xsd;string">2.0.0</owl:versionInfo>
-    <rdfs:label xml:lang="en">E-Commerce Product Ontology</rdfs:label>
-    <rdfs:comment xml:lang="en">OWL 2 DL ontology modelling the core domain of an online shopping platform. Covers product catalogues, customer and seller roles, order lifecycle, brand and category taxonomy, user-generated reviews, and payment methods. Provides automated classification of PremiumProduct, BudgetProduct, MidRangeProduct, GamingLaptop, GamerCustomer, FrequentBuyer, HighRatedProduct, LoyalCustomer, DiscountedProduct, and VerifiedReview via HermiT/Pellet reasoning.</rdfs:comment>
-    <dc:creator>Mohd Khan</dc:creator>
-    <dc:publisher>University of Campania Luigi Vanvitelli</dc:publisher>
-    <dc:date rdf:datatype="&xsd;date">2026-05-09</dc:date>
-    <dc:description xml:lang="en">An expressive e-commerce knowledge graph ontology demonstrating OWL 2 DL: qualified cardinality restrictions, equivalent-class definitions, inverse properties, property chains, asymmetric and transitive properties, SKOS annotations, and comprehensive disjointness constraints.</dc:description>
-    <dc:rights>MIT License</dc:rights>
+    <rdfs:label>E-Commerce Product Ontology v2.0</rdfs:label>
+    <rdfs:comment>OWL 2 DL ontology for online shopping platform.</rdfs:comment>
   </owl:Ontology>
 
-  <!-- ============================================================
-       ANNOTATION PROPERTIES
-       ============================================================ -->
-  <owl:AnnotationProperty rdf:about="&dc;creator"/>
-  <owl:AnnotationProperty rdf:about="&dc;publisher"/>
-  <owl:AnnotationProperty rdf:about="&dc;date"/>
-  <owl:AnnotationProperty rdf:about="&dc;description"/>
-  <owl:AnnotationProperty rdf:about="&dc;rights"/>
-  <owl:AnnotationProperty rdf:about="&skos;definition"/>
-  <owl:AnnotationProperty rdf:about="&skos;example"/>
-  <owl:AnnotationProperty rdf:about="&skos;note"/>
-  <owl:AnnotationProperty rdf:about="&skos;altLabel"/>
+  <!-- OBJECT PROPERTIES -->
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#purchases">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Customer"/>
+    <rdfs:range rdf:resource="http://www.example.org/ecommerce#Product"/>
+    <owl:inverseOf rdf:resource="http://www.example.org/ecommerce#isPurchasedBy"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#isPurchasedBy"/>
 
-  <owl:AnnotationProperty rdf:about="&ec;answersCompetencyQuestion">
-    <rdfs:label xml:lang="en">answers competency question</rdfs:label>
-    <rdfs:comment xml:lang="en">Links an ontology element to the competency question it answers.</rdfs:comment>
-  </owl:AnnotationProperty>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#manufacturedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Product"/>
+    <rdfs:range rdf:resource="http://www.example.org/ecommerce#Brand"/>
+    <owl:inverseOf rdf:resource="http://www.example.org/ecommerce#manufactures"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#manufactures"/>
 
-  <owl:AnnotationProperty rdf:about="&ec;encodesBusinessRule">
-    <rdfs:label xml:lang="en">encodes business rule</rdfs:label>
-    <rdfs:comment xml:lang="en">Links an axiom to the business rule it formally represents.</rdfs:comment>
-  </owl:AnnotationProperty>
-
-  <!-- ============================================================
-       DATA PROPERTIES
-       ============================================================ -->
-
-  <owl:DatatypeProperty rdf:about="&ec;hasPrice">
-    <rdfs:label xml:lang="en">has price</rdfs:label>
-    <skos:definition xml:lang="en">Retail price of a product in USD (non-negative decimal).</skos:definition>
-    <ec:answersCompetencyQuestion>CQ1: Which products cost more than $1000?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&xsd;decimal"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasOriginalPrice">
-    <rdfs:label xml:lang="en">has original price</rdfs:label>
-    <skos:definition xml:lang="en">List price before any discount is applied.</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&xsd;decimal"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasDiscountPercentage">
-    <rdfs:label xml:lang="en">has discount percentage</rdfs:label>
-    <skos:definition xml:lang="en">Percentage discount applied to the product (0-100).</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&xsd;decimal"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasStockQuantity">
-    <rdfs:label xml:lang="en">has stock quantity</rdfs:label>
-    <skos:definition xml:lang="en">Units currently available in warehouse inventory.</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasSKU">
-    <rdfs:label xml:lang="en">has SKU</rdfs:label>
-    <skos:definition xml:lang="en">Stock Keeping Unit - unique alphanumeric product identifier.</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&xsd;string"/>
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasWeight">
-    <rdfs:label xml:lang="en">has weight kg</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&xsd;decimal"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasDescription">
-    <rdfs:label xml:lang="en">has description</rdfs:label>
-    <rdfs:range rdf:resource="&xsd;string"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasRating">
-    <rdfs:label xml:lang="en">has rating</rdfs:label>
-    <skos:definition xml:lang="en">Numeric rating 0.0-5.0 assigned by a customer review.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ9: Which reviews rate a product above 4.5?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Review"/>
-    <rdfs:range rdf:resource="&xsd;decimal"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasAggregateRating">
-    <rdfs:label xml:lang="en">has aggregate rating</rdfs:label>
-    <skos:definition xml:lang="en">Mean of all customer review ratings for a product (0.0-5.0).</skos:definition>
-    <ec:answersCompetencyQuestion>CQ10: Which products have aggregate rating above 4.5?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&xsd;decimal"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasCustomerID">
-    <rdfs:label xml:lang="en">has customer ID</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&xsd;string"/>
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasSellerID">
-    <rdfs:label xml:lang="en">has seller ID</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Seller"/>
-    <rdfs:range rdf:resource="&xsd;string"/>
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasEmail">
-    <rdfs:label xml:lang="en">has email</rdfs:label>
-    <rdfs:range rdf:resource="&xsd;string"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasPhoneNumber">
-    <rdfs:label xml:lang="en">has phone number</rdfs:label>
-    <rdfs:range rdf:resource="&xsd;string"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasAddress">
-    <rdfs:label xml:lang="en">has address</rdfs:label>
-    <rdfs:range rdf:resource="&xsd;string"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasName">
-    <rdfs:label xml:lang="en">has name</rdfs:label>
-    <rdfs:range rdf:resource="&xsd;string"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasOrderID">
-    <rdfs:label xml:lang="en">has order ID</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Order"/>
-    <rdfs:range rdf:resource="&xsd;string"/>
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasOrderDate">
-    <rdfs:label xml:lang="en">has order date</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Order"/>
-    <rdfs:range rdf:resource="&xsd;date"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasTotalAmount">
-    <rdfs:label xml:lang="en">has total amount</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Order"/>
-    <rdfs:range rdf:resource="&xsd;decimal"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasDeliveryStatus">
-    <rdfs:label xml:lang="en">has delivery status</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Order"/>
-    <rdfs:range rdf:resource="&xsd;string"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasReviewText">
-    <rdfs:label xml:lang="en">has review text</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Review"/>
-    <rdfs:range rdf:resource="&xsd;string"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;isVerifiedPurchase">
-    <rdfs:label xml:lang="en">is verified purchase</rdfs:label>
-    <skos:definition xml:lang="en">True when the review author purchased the product through the platform.</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Review"/>
-    <rdfs:range rdf:resource="&xsd;boolean"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;isGamingLaptop">
-    <rdfs:label xml:lang="en">is gaming laptop</rdfs:label>
-    <skos:definition xml:lang="en">Boolean flag; true when a laptop is positioned as a gaming device.</skos:definition>
-    <ec:encodesBusinessRule>Drives automated GamingLaptop and GamerCustomer classification.</ec:encodesBusinessRule>
-    <rdfs:domain rdf:resource="&ec;Laptop"/>
-    <rdfs:range rdf:resource="&xsd;boolean"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasOrderCount">
-    <rdfs:label xml:lang="en">has order count</rdfs:label>
-    <skos:definition xml:lang="en">Total number of orders placed by a customer.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ11: Which customers have placed 3 or more orders?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasFoundedYear">
-    <rdfs:label xml:lang="en">has founded year</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Brand"/>
-    <rdfs:range rdf:resource="&xsd;gYear"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasCountryOfOrigin">
-    <rdfs:label xml:lang="en">has country of origin</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Brand"/>
-    <rdfs:range rdf:resource="&xsd;string"/>
-  </owl:DatatypeProperty>
-
-  <!-- ============================================================
-       OBJECT PROPERTIES
-       ============================================================ -->
-
-  <!-- purchases / isPurchasedBy -->
-  <owl:ObjectProperty rdf:about="&ec;purchases">
-    <rdfs:label xml:lang="en">purchases</rdfs:label>
-    <skos:definition xml:lang="en">Customer bought a Product. Inverse of isPurchasedBy.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ2, CQ8</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-    <owl:inverseOf rdf:resource="&ec;isPurchasedBy"/>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#placesOrder">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Customer"/>
+    <rdfs:range rdf:resource="http://www.example.org/ecommerce#Order"/>
+    <owl:inverseOf rdf:resource="http://www.example.org/ecommerce#isOrderOf"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#isOrderOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="&ec;isPurchasedBy">
-    <rdfs:label xml:lang="en">is purchased by</rdfs:label>
-    <owl:inverseOf rdf:resource="&ec;purchases"/>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&ec;Customer"/>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#containsProduct">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Order"/>
+    <rdfs:range rdf:resource="http://www.example.org/ecommerce#Product"/>
   </owl:ObjectProperty>
 
-  <!-- placesOrder / isOrderOf -->
-  <owl:ObjectProperty rdf:about="&ec;placesOrder">
-    <rdfs:label xml:lang="en">places order</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&ec;Order"/>
-    <owl:inverseOf rdf:resource="&ec;isOrderOf"/>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#usesPaymentMethod">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Order"/>
+    <rdfs:range rdf:resource="http://www.example.org/ecommerce#PaymentMethod"/>
   </owl:ObjectProperty>
 
-  <owl:ObjectProperty rdf:about="&ec;isOrderOf">
-    <rdfs:label xml:lang="en">is order of</rdfs:label>
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-    <owl:inverseOf rdf:resource="&ec;placesOrder"/>
-    <rdfs:domain rdf:resource="&ec;Order"/>
-    <rdfs:range rdf:resource="&ec;Customer"/>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#reviewsProduct">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Review"/>
+    <rdfs:range rdf:resource="http://www.example.org/ecommerce#Product"/>
+    <owl:inverseOf rdf:resource="http://www.example.org/ecommerce#hasReview"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#hasReview"/>
 
-  <!-- containsProduct -->
-  <owl:ObjectProperty rdf:about="&ec;containsProduct">
-    <rdfs:label xml:lang="en">contains product</rdfs:label>
-    <skos:definition xml:lang="en">Order includes a Product. An Order must contain at least one Product.</skos:definition>
-    <ec:encodesBusinessRule>minQualifiedCardinality 1 on Order forces at least one product per order.</ec:encodesBusinessRule>
-    <rdfs:domain rdf:resource="&ec;Order"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-  </owl:ObjectProperty>
-
-  <!-- manufacturedBy / manufactures -->
-  <owl:ObjectProperty rdf:about="&ec;manufacturedBy">
-    <rdfs:label xml:lang="en">manufactured by</rdfs:label>
-    <skos:definition xml:lang="en">Product has exactly one manufacturing Brand. Functional and asymmetric.</skos:definition>
-    <ec:encodesBusinessRule>Every Product has exactly 1 Brand.</ec:encodesBusinessRule>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&ec;Brand"/>
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-    <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
-    <owl:inverseOf rdf:resource="&ec;manufactures"/>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;manufactures">
-    <rdfs:label xml:lang="en">manufactures</rdfs:label>
-    <owl:inverseOf rdf:resource="&ec;manufacturedBy"/>
-    <rdfs:domain rdf:resource="&ec;Brand"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-  </owl:ObjectProperty>
-
-  <!-- belongsToCategory / hasMember -->
-  <owl:ObjectProperty rdf:about="&ec;belongsToCategory">
-    <rdfs:label xml:lang="en">belongs to category</rdfs:label>
-    <ec:answersCompetencyQuestion>CQ7: Which products belong to Gaming?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&ec;Category"/>
-    <owl:inverseOf rdf:resource="&ec;hasMember"/>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;hasMember">
-    <rdfs:label xml:lang="en">has member</rdfs:label>
-    <owl:inverseOf rdf:resource="&ec;belongsToCategory"/>
-    <rdfs:domain rdf:resource="&ec;Category"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-  </owl:ObjectProperty>
-
-  <!-- hasSubcategory - Transitive, Asymmetric, Irreflexive -->
-  <owl:ObjectProperty rdf:about="&ec;hasSubcategory">
-    <rdfs:label xml:lang="en">has subcategory</rdfs:label>
-    <skos:definition xml:lang="en">Transitive hierarchical relation between category nodes.</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Category"/>
-    <rdfs:range rdf:resource="&ec;Category"/>
-    <rdf:type rdf:resource="&owl;TransitiveProperty"/>
-    <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
-    <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
-  </owl:ObjectProperty>
-
-  <!-- writesReview / isWrittenBy -->
-  <owl:ObjectProperty rdf:about="&ec;writesReview">
-    <rdfs:label xml:lang="en">writes review</rdfs:label>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&ec;Review"/>
-    <owl:inverseOf rdf:resource="&ec;isWrittenBy"/>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;isWrittenBy">
-    <rdfs:label xml:lang="en">is written by</rdfs:label>
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-    <owl:inverseOf rdf:resource="&ec;writesReview"/>
-    <rdfs:domain rdf:resource="&ec;Review"/>
-    <rdfs:range rdf:resource="&ec;Customer"/>
-  </owl:ObjectProperty>
-
-  <!-- reviewsProduct / hasReview -->
-  <owl:ObjectProperty rdf:about="&ec;reviewsProduct">
-    <rdfs:label xml:lang="en">reviews product</rdfs:label>
-    <ec:answersCompetencyQuestion>CQ6: What reviews exist for ROGZephyrus?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Review"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-    <owl:inverseOf rdf:resource="&ec;hasReview"/>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;hasReview">
-    <rdfs:label xml:lang="en">has review</rdfs:label>
-    <owl:inverseOf rdf:resource="&ec;reviewsProduct"/>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&ec;Review"/>
-  </owl:ObjectProperty>
-
-  <!-- sells / isSoldBy -->
-  <owl:ObjectProperty rdf:about="&ec;sells">
-    <rdfs:label xml:lang="en">sells</rdfs:label>
-    <ec:answersCompetencyQuestion>CQ8: Which sellers list premium products?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Seller"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-    <owl:inverseOf rdf:resource="&ec;isSoldBy"/>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;isSoldBy">
-    <rdfs:label xml:lang="en">is sold by</rdfs:label>
-    <owl:inverseOf rdf:resource="&ec;sells"/>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&ec;Seller"/>
-  </owl:ObjectProperty>
-
-  <!-- usesPaymentMethod -->
-  <owl:ObjectProperty rdf:about="&ec;usesPaymentMethod">
-    <rdfs:label xml:lang="en">uses payment method</rdfs:label>
-    <ec:answersCompetencyQuestion>CQ5: Which orders used PayPal?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Order"/>
-    <rdfs:range rdf:resource="&ec;PaymentMethod"/>
-  </owl:ObjectProperty>
-
-  <!-- prefersBrand - inferred via property chain -->
-  <owl:ObjectProperty rdf:about="&ec;prefersBrand">
-    <rdfs:label xml:lang="en">prefers brand</rdfs:label>
-    <skos:definition xml:lang="en">Inferred property. If a Customer purchases a Product manufactured by a Brand, the reasoner infers the Customer prefersBrand that Brand.</skos:definition>
-    <skos:note xml:lang="en">Property chain: purchases o manufacturedBy SubPropertyOf prefersBrand</skos:note>
-    <ec:answersCompetencyQuestion>CQ12: Which brands does a customer prefer based on purchase history?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&ec;Brand"/>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#prefersBrand">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Customer"/>
+    <rdfs:range rdf:resource="http://www.example.org/ecommerce#Brand"/>
     <owl:propertyChainAxiom rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;purchases"/>
-      <rdf:Description rdf:about="&ec;manufacturedBy"/>
+      <rdf:Description rdf:about="http://www.example.org/ecommerce#purchases"/>
+      <rdf:Description rdf:about="http://www.example.org/ecommerce#manufacturedBy"/>
     </owl:propertyChainAxiom>
   </owl:ObjectProperty>
 
-  <!-- hasRelatedProduct - Symmetric, Irreflexive -->
-  <owl:ObjectProperty rdf:about="&ec;hasRelatedProduct">
-    <rdfs:label xml:lang="en">has related product</rdfs:label>
-    <skos:definition xml:lang="en">Symmetric relation between products commonly purchased together or from the same product family.</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-    <rdf:type rdf:resource="&owl;SymmetricProperty"/>
-    <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+  <owl:ObjectProperty rdf:about="http://www.example.org/ecommerce#hasSubcategory">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
   </owl:ObjectProperty>
 
+  <!-- DATA PROPERTIES -->
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasPrice">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Product"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasDiscountPercentage">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Product"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasAggregateRating">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Product"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#isGamingLaptop">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Laptop"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasOrderCount">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Customer"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#isVerifiedPurchase">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Review"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasRating">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Review"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasSKU">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Product"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasOrderID">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Order"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasDeliveryStatus">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Order"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.example.org/ecommerce#hasTotalAmount">
+    <rdfs:domain rdf:resource="http://www.example.org/ecommerce#Order"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
 
-  <!-- ============================================================
-       CORE CLASSES
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;Brand">
-    <rdfs:label xml:lang="en">Brand</rdfs:label>
-    <skos:definition xml:lang="en">A commercial entity that manufactures and markets products.</skos:definition>
-    <skos:example xml:lang="en">Apple Inc., Samsung Electronics, ASUSTeK</skos:example>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Category">
-    <rdfs:label xml:lang="en">Category</rdfs:label>
-    <skos:definition xml:lang="en">A node in the product taxonomy tree; categories can have subcategories (transitive hasSubcategory).</skos:definition>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;PaymentMethod">
-    <rdfs:label xml:lang="en">PaymentMethod</rdfs:label>
-    <skos:definition xml:lang="en">A mechanism for settling the financial obligation of an Order.</skos:definition>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:unionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;CreditCard"/>
-          <rdf:Description rdf:about="&ec;PayPal"/>
-          <rdf:Description rdf:about="&ec;BankTransfer"/>
-          <rdf:Description rdf:about="&ec;CryptoCurrency"/>
-        </owl:unionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;CreditCard">
-    <rdfs:label xml:lang="en">CreditCard</rdfs:label>
-    <rdfs:subClassOf rdf:resource="&ec;PaymentMethod"/>
-    <skos:definition xml:lang="en">Payment via Visa, Mastercard, or AMEX card.</skos:definition>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;PayPal">
-    <rdfs:label xml:lang="en">PayPal</rdfs:label>
-    <rdfs:subClassOf rdf:resource="&ec;PaymentMethod"/>
-    <skos:definition xml:lang="en">Digital wallet payment via the PayPal platform.</skos:definition>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;BankTransfer">
-    <rdfs:label xml:lang="en">BankTransfer</rdfs:label>
-    <rdfs:subClassOf rdf:resource="&ec;PaymentMethod"/>
-    <skos:definition xml:lang="en">Direct bank-to-bank transfer such as SEPA or wire transfer.</skos:definition>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;CryptoCurrency">
-    <rdfs:label xml:lang="en">CryptoCurrency</rdfs:label>
-    <rdfs:subClassOf rdf:resource="&ec;PaymentMethod"/>
-    <skos:definition xml:lang="en">Payment via blockchain-based digital currency (Bitcoin, Ethereum).</skos:definition>
-  </owl:Class>
-
-  <owl:AllDisjointClasses>
-    <owl:members rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;CreditCard"/>
-      <rdf:Description rdf:about="&ec;PayPal"/>
-      <rdf:Description rdf:about="&ec;BankTransfer"/>
-      <rdf:Description rdf:about="&ec;CryptoCurrency"/>
-    </owl:members>
-  </owl:AllDisjointClasses>
-
-  <!-- Review - with cardinality restrictions -->
-  <owl:Class rdf:about="&ec;Review">
-    <rdfs:label xml:lang="en">Review</rdfs:label>
-    <skos:definition xml:lang="en">Customer-authored evaluation of a product with numeric rating and optional free text.</skos:definition>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="&ec;reviewsProduct"/>
-        <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-        <owl:onClass rdf:resource="&ec;Product"/>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="&ec;hasRating"/>
-        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Customer">
-    <rdfs:label xml:lang="en">Customer</rdfs:label>
-    <skos:definition xml:lang="en">A registered user who purchases products, places orders, and authors reviews.</skos:definition>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Seller">
-    <rdfs:label xml:lang="en">Seller</rdfs:label>
-    <skos:definition xml:lang="en">An individual or business listing products for sale on the platform.</skos:definition>
-  </owl:Class>
+  <!-- CLASSES -->
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Brand"/>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Category"/>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Customer"/>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Seller"/>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Review"/>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Order"/>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#PaymentMethod"/>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#CreditCard"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#PaymentMethod"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#PayPal"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#PaymentMethod"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#BankTransfer"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#PaymentMethod"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#CryptoCurrency"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#PaymentMethod"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Product"/>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Electronics"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Product"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Accessories"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Product"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Laptop"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Electronics"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Smartphone"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Electronics"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Tablet"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Electronics"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Headphones"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Electronics"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#SmartWatch"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Electronics"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Cable"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Accessories"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Charger"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Accessories"/></owl:Class>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#Case"><rdfs:subClassOf rdf:resource="http://www.example.org/ecommerce#Accessories"/></owl:Class>
 
   <owl:AllDisjointClasses>
     <owl:members rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Customer"/>
-      <rdf:Description rdf:about="&ec;Seller"/>
-      <rdf:Description rdf:about="&ec;Brand"/>
+      <rdf:Description rdf:about="http://www.example.org/ecommerce#Customer"/>
+      <rdf:Description rdf:about="http://www.example.org/ecommerce#Seller"/>
+      <rdf:Description rdf:about="http://www.example.org/ecommerce#Brand"/>
     </owl:members>
   </owl:AllDisjointClasses>
-
-  <!-- Order - three restrictions -->
-  <owl:Class rdf:about="&ec;Order">
-    <rdfs:label xml:lang="en">Order</rdfs:label>
-    <skos:definition xml:lang="en">A transaction record linking a customer to one or more purchased products and a payment method.</skos:definition>
-    <ec:encodesBusinessRule>An Order must contain at least one Product - empty orders are inadmissible.</ec:encodesBusinessRule>
-    <!-- RESTRICTION 1: at least 1 Product -->
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="&ec;containsProduct"/>
-        <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
-        <owl:onClass rdf:resource="&ec;Product"/>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <!-- RESTRICTION 2: exactly 1 PaymentMethod -->
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="&ec;usesPaymentMethod"/>
-        <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-        <owl:onClass rdf:resource="&ec;PaymentMethod"/>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <!-- RESTRICTION 3: exactly 1 Customer -->
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="&ec;isOrderOf"/>
-        <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-        <owl:onClass rdf:resource="&ec;Customer"/>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-  </owl:Class>
-
-  <!-- Product - four restrictions -->
-  <owl:Class rdf:about="&ec;Product">
-    <rdfs:label xml:lang="en">Product</rdfs:label>
-    <skos:definition xml:lang="en">Any tangible or digital item offered for sale through the platform.</skos:definition>
-    <!-- RESTRICTION 4: exactly 1 Brand -->
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="&ec;manufacturedBy"/>
-        <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-        <owl:onClass rdf:resource="&ec;Brand"/>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <!-- RESTRICTION 5: at least 1 price -->
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="&ec;hasPrice"/>
-        <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <!-- RESTRICTION 6: at least 1 Category -->
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty rdf:resource="&ec;belongsToCategory"/>
-        <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
-        <owl:onClass rdf:resource="&ec;Category"/>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-  </owl:Class>
-
-  <!-- ============================================================
-       PRODUCT SUBCLASSES
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;Electronics">
-    <rdfs:label xml:lang="en">Electronics</rdfs:label>
-    <skos:definition xml:lang="en">Electronic devices requiring power to operate.</skos:definition>
-    <rdfs:subClassOf rdf:resource="&ec;Product"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Laptop">
-    <rdfs:label xml:lang="en">Laptop</rdfs:label>
-    <skos:definition xml:lang="en">A portable personal computer with integrated keyboard and display.</skos:definition>
-    <rdfs:subClassOf rdf:resource="&ec;Electronics"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Smartphone">
-    <rdfs:label xml:lang="en">Smartphone</rdfs:label>
-    <skos:definition xml:lang="en">A handheld mobile device combining telephony, computing, and internet access.</skos:definition>
-    <rdfs:subClassOf rdf:resource="&ec;Electronics"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Tablet">
-    <rdfs:label xml:lang="en">Tablet</rdfs:label>
-    <skos:definition xml:lang="en">A portable touchscreen computing device between a smartphone and a laptop.</skos:definition>
-    <rdfs:subClassOf rdf:resource="&ec;Electronics"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Headphones">
-    <rdfs:label xml:lang="en">Headphones</rdfs:label>
-    <skos:definition xml:lang="en">Personal audio devices worn on or around the ears.</skos:definition>
-    <rdfs:subClassOf rdf:resource="&ec;Electronics"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;SmartWatch">
-    <rdfs:label xml:lang="en">SmartWatch</rdfs:label>
-    <skos:definition xml:lang="en">A wrist-worn computing device with notifications, fitness tracking, and app support.</skos:definition>
-    <rdfs:subClassOf rdf:resource="&ec;Electronics"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Accessories">
-    <rdfs:label xml:lang="en">Accessories</rdfs:label>
-    <skos:definition xml:lang="en">Supplementary non-primary items such as cables, cases, and chargers.</skos:definition>
-    <rdfs:subClassOf rdf:resource="&ec;Product"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Cable">
-    <rdfs:label xml:lang="en">Cable</rdfs:label>
-    <rdfs:subClassOf rdf:resource="&ec;Accessories"/>
-    <skos:definition xml:lang="en">A connectivity cable (USB-C, Lightning, HDMI, etc.).</skos:definition>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Charger">
-    <rdfs:label xml:lang="en">Charger</rdfs:label>
-    <rdfs:subClassOf rdf:resource="&ec;Accessories"/>
-    <skos:definition xml:lang="en">A power adapter or charging unit for electronic devices.</skos:definition>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Case">
-    <rdfs:label xml:lang="en">Case</rdfs:label>
-    <rdfs:subClassOf rdf:resource="&ec;Accessories"/>
-    <skos:definition xml:lang="en">A protective cover or enclosure for a device.</skos:definition>
-  </owl:Class>
-
   <owl:AllDisjointClasses>
     <owl:members rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Laptop"/>
-      <rdf:Description rdf:about="&ec;Smartphone"/>
-      <rdf:Description rdf:about="&ec;Tablet"/>
-      <rdf:Description rdf:about="&ec;Headphones"/>
-      <rdf:Description rdf:about="&ec;SmartWatch"/>
+      <rdf:Description rdf:about="http://www.example.org/ecommerce#Electronics"/>
+      <rdf:Description rdf:about="http://www.example.org/ecommerce#Accessories"/>
     </owl:members>
   </owl:AllDisjointClasses>
 
-  <owl:AllDisjointClasses>
-    <owl:members rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Electronics"/>
-      <rdf:Description rdf:about="&ec;Accessories"/>
-    </owl:members>
-  </owl:AllDisjointClasses>
-
-  <owl:AllDisjointClasses>
-    <owl:members rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Cable"/>
-      <rdf:Description rdf:about="&ec;Charger"/>
-      <rdf:Description rdf:about="&ec;Case"/>
-    </owl:members>
-  </owl:AllDisjointClasses>
-
-  <!-- ============================================================
-       DEFINED (INFERRED) CLASSES - 10 total
-       ============================================================ -->
-
-  <!-- 1. PremiumProduct: price >= 1000 -->
-  <owl:Class rdf:about="&ec;PremiumProduct">
-    <rdfs:label xml:lang="en">PremiumProduct</rdfs:label>
-    <skos:definition xml:lang="en">A product classified as premium because its price equals or exceeds $1,000 USD.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ1: Which products are premium?</ec:answersCompetencyQuestion>
+  <!-- DEFINED CLASSES (reasoner infers these) -->
+  <owl:Class rdf:about="http://www.example.org/ecommerce#PremiumProduct">
     <owl:equivalentClass>
       <owl:Class>
         <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Product"/>
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#Product"/>
           <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;hasPrice"/>
+            <owl:onProperty rdf:resource="http://www.example.org/ecommerce#hasPrice"/>
             <owl:someValuesFrom>
               <rdfs:Datatype>
-                <owl:onDatatype rdf:resource="&xsd;decimal"/>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
                 <owl:withRestrictions rdf:parseType="Collection">
-                  <rdf:Description>
-                    <xsd:minInclusive rdf:datatype="&xsd;decimal">1000.0</xsd:minInclusive>
-                  </rdf:Description>
+                  <rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1000.0</xsd:minInclusive></rdf:Description>
                 </owl:withRestrictions>
               </rdfs:Datatype>
             </owl:someValuesFrom>
@@ -688,24 +177,18 @@
     </owl:equivalentClass>
   </owl:Class>
 
-  <!-- 2. BudgetProduct: price < 300 -->
-  <owl:Class rdf:about="&ec;BudgetProduct">
-    <rdfs:label xml:lang="en">BudgetProduct</rdfs:label>
-    <skos:definition xml:lang="en">A product priced below $300 USD targeting price-sensitive customers.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ13: Which products are budget-friendly?</ec:answersCompetencyQuestion>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#BudgetProduct">
     <owl:equivalentClass>
       <owl:Class>
         <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Product"/>
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#Product"/>
           <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;hasPrice"/>
+            <owl:onProperty rdf:resource="http://www.example.org/ecommerce#hasPrice"/>
             <owl:someValuesFrom>
               <rdfs:Datatype>
-                <owl:onDatatype rdf:resource="&xsd;decimal"/>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
                 <owl:withRestrictions rdf:parseType="Collection">
-                  <rdf:Description>
-                    <xsd:maxExclusive rdf:datatype="&xsd;decimal">300.0</xsd:maxExclusive>
-                  </rdf:Description>
+                  <rdf:Description><xsd:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">300.0</xsd:maxExclusive></rdf:Description>
                 </owl:withRestrictions>
               </rdfs:Datatype>
             </owl:someValuesFrom>
@@ -715,26 +198,18 @@
     </owl:equivalentClass>
   </owl:Class>
 
-  <!-- 3. MidRangeProduct: 300 <= price < 1000 -->
-  <owl:Class rdf:about="&ec;MidRangeProduct">
-    <rdfs:label xml:lang="en">MidRangeProduct</rdfs:label>
-    <skos:definition xml:lang="en">A product priced between $300 and $999 USD in the mid-market segment.</skos:definition>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#DiscountedProduct">
     <owl:equivalentClass>
       <owl:Class>
         <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Product"/>
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#Product"/>
           <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;hasPrice"/>
+            <owl:onProperty rdf:resource="http://www.example.org/ecommerce#hasDiscountPercentage"/>
             <owl:someValuesFrom>
               <rdfs:Datatype>
-                <owl:onDatatype rdf:resource="&xsd;decimal"/>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
                 <owl:withRestrictions rdf:parseType="Collection">
-                  <rdf:Description>
-                    <xsd:minInclusive rdf:datatype="&xsd;decimal">300.0</xsd:minInclusive>
-                  </rdf:Description>
-                  <rdf:Description>
-                    <xsd:maxExclusive rdf:datatype="&xsd;decimal">1000.0</xsd:maxExclusive>
-                  </rdf:Description>
+                  <rdf:Description><xsd:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0</xsd:minExclusive></rdf:Description>
                 </owl:withRestrictions>
               </rdfs:Datatype>
             </owl:someValuesFrom>
@@ -744,59 +219,18 @@
     </owl:equivalentClass>
   </owl:Class>
 
-  <!-- 4. GamingLaptop: Laptop with isGamingLaptop = true -->
-  <owl:Class rdf:about="&ec;GamingLaptop">
-    <rdfs:label xml:lang="en">GamingLaptop</rdfs:label>
-    <skos:definition xml:lang="en">A Laptop flagged as a gaming device (isGamingLaptop = true).</skos:definition>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#HighRatedProduct">
     <owl:equivalentClass>
       <owl:Class>
         <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Laptop"/>
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#Product"/>
           <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;isGamingLaptop"/>
-            <owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
-          </owl:Restriction>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-  <!-- 5. GamerCustomer: Customer who purchased a GamingLaptop -->
-  <owl:Class rdf:about="&ec;GamerCustomer">
-    <rdfs:label xml:lang="en">GamerCustomer</rdfs:label>
-    <skos:definition xml:lang="en">A Customer who purchased at least one GamingLaptop.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ2: Which customers purchased a gaming laptop?</ec:answersCompetencyQuestion>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Customer"/>
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;purchases"/>
-            <owl:someValuesFrom rdf:resource="&ec;GamingLaptop"/>
-          </owl:Restriction>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-  <!-- 6. FrequentBuyer: Customer with orderCount >= 3 -->
-  <owl:Class rdf:about="&ec;FrequentBuyer">
-    <rdfs:label xml:lang="en">FrequentBuyer</rdfs:label>
-    <skos:definition xml:lang="en">A Customer with three or more orders, eligible for loyalty programme benefits.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ11: Which customers qualify as frequent buyers?</ec:answersCompetencyQuestion>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Customer"/>
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;hasOrderCount"/>
+            <owl:onProperty rdf:resource="http://www.example.org/ecommerce#hasAggregateRating"/>
             <owl:someValuesFrom>
               <rdfs:Datatype>
-                <owl:onDatatype rdf:resource="&xsd;nonNegativeInteger"/>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
                 <owl:withRestrictions rdf:parseType="Collection">
-                  <rdf:Description>
-                    <xsd:minInclusive rdf:datatype="&xsd;nonNegativeInteger">3</xsd:minInclusive>
-                  </rdf:Description>
+                  <rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.5</xsd:minInclusive></rdf:Description>
                 </owl:withRestrictions>
               </rdfs:Datatype>
             </owl:someValuesFrom>
@@ -806,38 +240,46 @@
     </owl:equivalentClass>
   </owl:Class>
 
-  <!-- 7. LoyalCustomer: FrequentBuyer AND GamerCustomer -->
-  <owl:Class rdf:about="&ec;LoyalCustomer">
-    <rdfs:label xml:lang="en">LoyalCustomer</rdfs:label>
-    <skos:definition xml:lang="en">A customer who is both a FrequentBuyer and a GamerCustomer - highest-value segment.</skos:definition>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#GamingLaptop">
     <owl:equivalentClass>
       <owl:Class>
         <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;FrequentBuyer"/>
-          <rdf:Description rdf:about="&ec;GamerCustomer"/>
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#Laptop"/>
+          <owl:Restriction>
+            <owl:onProperty rdf:resource="http://www.example.org/ecommerce#isGamingLaptop"/>
+            <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:hasValue>
+          </owl:Restriction>
         </owl:intersectionOf>
       </owl:Class>
     </owl:equivalentClass>
   </owl:Class>
 
-  <!-- 8. HighRatedProduct: aggregate rating >= 4.5 -->
-  <owl:Class rdf:about="&ec;HighRatedProduct">
-    <rdfs:label xml:lang="en">HighRatedProduct</rdfs:label>
-    <skos:definition xml:lang="en">A product whose aggregate customer rating is 4.5 or above on a 5.0 scale.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ10: Which products have aggregate rating above 4.5?</ec:answersCompetencyQuestion>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#GamerCustomer">
     <owl:equivalentClass>
       <owl:Class>
         <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Product"/>
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#Customer"/>
           <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;hasAggregateRating"/>
+            <owl:onProperty rdf:resource="http://www.example.org/ecommerce#purchases"/>
+            <owl:someValuesFrom rdf:resource="http://www.example.org/ecommerce#GamingLaptop"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://www.example.org/ecommerce#FrequentBuyer">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#Customer"/>
+          <owl:Restriction>
+            <owl:onProperty rdf:resource="http://www.example.org/ecommerce#hasOrderCount"/>
             <owl:someValuesFrom>
               <rdfs:Datatype>
-                <owl:onDatatype rdf:resource="&xsd;decimal"/>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"/>
                 <owl:withRestrictions rdf:parseType="Collection">
-                  <rdf:Description>
-                    <xsd:minInclusive rdf:datatype="&xsd;decimal">4.5</xsd:minInclusive>
-                  </rdf:Description>
+                  <rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</xsd:minInclusive></rdf:Description>
                 </owl:withRestrictions>
               </rdfs:Datatype>
             </owl:someValuesFrom>
@@ -847,1296 +289,196 @@
     </owl:equivalentClass>
   </owl:Class>
 
-  <!-- 9. DiscountedProduct: discountPercentage > 0 -->
-  <owl:Class rdf:about="&ec;DiscountedProduct">
-    <rdfs:label xml:lang="en">DiscountedProduct</rdfs:label>
-    <skos:definition xml:lang="en">A product currently offered at a reduced price (discount > 0%).</skos:definition>
+  <owl:Class rdf:about="http://www.example.org/ecommerce#LoyalCustomer">
     <owl:equivalentClass>
       <owl:Class>
         <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Product"/>
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#FrequentBuyer"/>
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#GamerCustomer"/>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://www.example.org/ecommerce#VerifiedReview">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://www.example.org/ecommerce#Review"/>
           <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;hasDiscountPercentage"/>
-            <owl:someValuesFrom>
-              <rdfs:Datatype>
-                <owl:onDatatype rdf:resource="&xsd;decimal"/>
-                <owl:withRestrictions rdf:parseType="Collection">
-                  <rdf:Description>
-                    <xsd:minExclusive rdf:datatype="&xsd;decimal">0.0</xsd:minExclusive>
-                  </rdf:Description>
-                </owl:withRestrictions>
-              </rdfs:Datatype>
-            </owl:someValuesFrom>
+            <owl:onProperty rdf:resource="http://www.example.org/ecommerce#isVerifiedPurchase"/>
+            <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:hasValue>
           </owl:Restriction>
         </owl:intersectionOf>
       </owl:Class>
     </owl:equivalentClass>
   </owl:Class>
 
-  <!-- 10. VerifiedReview: Review with isVerifiedPurchase = true -->
-  <owl:Class rdf:about="&ec;VerifiedReview">
-    <rdfs:label xml:lang="en">VerifiedReview</rdfs:label>
-    <skos:definition xml:lang="en">A Review confirmed as coming from a platform purchaser of the product.</skos:definition>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Review"/>
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;isVerifiedPurchase"/>
-            <owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
-          </owl:Restriction>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
+  <!-- BRANDS -->
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Apple"><rdf:type rdf:resource="http://www.example.org/ecommerce#Brand"/><rdfs:label>Apple Inc.</rdfs:label></owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Samsung"><rdf:type rdf:resource="http://www.example.org/ecommerce#Brand"/><rdfs:label>Samsung</rdfs:label></owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Asus"><rdf:type rdf:resource="http://www.example.org/ecommerce#Brand"/><rdfs:label>Asus</rdfs:label></owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Sony"><rdf:type rdf:resource="http://www.example.org/ecommerce#Brand"/><rdfs:label>Sony</rdfs:label></owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Anker"><rdf:type rdf:resource="http://www.example.org/ecommerce#Brand"/><rdfs:label>Anker</rdfs:label></owl:NamedIndividual>
 
-  <!-- ============================================================
-       BRAND INDIVIDUALS (5)
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;Apple">
-    <rdf:type rdf:resource="&ec;Brand"/>
-    <rdfs:label xml:lang="en">Apple</rdfs:label>
-    <ec:hasName>Apple Inc.</ec:hasName>
-    <ec:hasCountryOfOrigin>United States</ec:hasCountryOfOrigin>
-    <ec:hasFoundedYear rdf:datatype="&xsd;gYear">1976</ec:hasFoundedYear>
-    <ec:hasDescription xml:lang="en">Cupertino-based technology company known for iPhone, Mac, and iPad.</ec:hasDescription>
+  <!-- PRODUCTS -->
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#MacBookPro">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Laptop"/>
+    <rdfs:label>MacBook Pro M3 Max</rdfs:label>
+    <ec:hasPrice rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2499.00</ec:hasPrice>
+    <ec:hasDiscountPercentage rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0</ec:hasDiscountPercentage>
+    <ec:hasAggregateRating rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.9</ec:hasAggregateRating>
+    <ec:isGamingLaptop rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ec:isGamingLaptop>
+    <ec:manufacturedBy rdf:resource="http://www.example.org/ecommerce#Apple"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#iPhone15Pro">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Smartphone"/>
+    <rdfs:label>iPhone 15 Pro</rdfs:label>
+    <ec:hasPrice rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1199.00</ec:hasPrice>
+    <ec:hasDiscountPercentage rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0</ec:hasDiscountPercentage>
+    <ec:hasAggregateRating rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.8</ec:hasAggregateRating>
+    <ec:manufacturedBy rdf:resource="http://www.example.org/ecommerce#Apple"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#GalaxyS24Ultra">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Smartphone"/>
+    <rdfs:label>Galaxy S24 Ultra</rdfs:label>
+    <ec:hasPrice rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">899.00</ec:hasPrice>
+    <ec:hasDiscountPercentage rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10.0</ec:hasDiscountPercentage>
+    <ec:hasAggregateRating rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.6</ec:hasAggregateRating>
+    <ec:manufacturedBy rdf:resource="http://www.example.org/ecommerce#Samsung"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#ROGZephyrus">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Laptop"/>
+    <rdfs:label>ROG Zephyrus G16</rdfs:label>
+    <ec:hasPrice rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1799.00</ec:hasPrice>
+    <ec:hasDiscountPercentage rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10.0</ec:hasDiscountPercentage>
+    <ec:hasAggregateRating rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.8</ec:hasAggregateRating>
+    <ec:isGamingLaptop rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ec:isGamingLaptop>
+    <ec:manufacturedBy rdf:resource="http://www.example.org/ecommerce#Asus"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#SonyHeadphones">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Headphones"/>
+    <rdfs:label>Sony WH-1000XM5</rdfs:label>
+    <ec:hasPrice rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">349.00</ec:hasPrice>
+    <ec:hasDiscountPercentage rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.5</ec:hasDiscountPercentage>
+    <ec:hasAggregateRating rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.7</ec:hasAggregateRating>
+    <ec:manufacturedBy rdf:resource="http://www.example.org/ecommerce#Sony"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#AnkerCharger">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Charger"/>
+    <rdfs:label>Anker 67W Charger</rdfs:label>
+    <ec:hasPrice rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">55.00</ec:hasPrice>
+    <ec:hasDiscountPercentage rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">15.0</ec:hasDiscountPercentage>
+    <ec:hasAggregateRating rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.6</ec:hasAggregateRating>
+    <ec:manufacturedBy rdf:resource="http://www.example.org/ecommerce#Anker"/>
   </owl:NamedIndividual>
 
-  <owl:NamedIndividual rdf:about="&ec;Samsung">
-    <rdf:type rdf:resource="&ec;Brand"/>
-    <rdfs:label xml:lang="en">Samsung</rdfs:label>
-    <ec:hasName>Samsung Electronics Co., Ltd.</ec:hasName>
-    <ec:hasCountryOfOrigin>South Korea</ec:hasCountryOfOrigin>
-    <ec:hasFoundedYear rdf:datatype="&xsd;gYear">1969</ec:hasFoundedYear>
-    <ec:hasDescription xml:lang="en">World's largest smartphone manufacturer and diversified electronics conglomerate.</ec:hasDescription>
+  <owl:AllDifferent><owl:distinctMembers rdf:parseType="Collection">
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#MacBookPro"/>
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#iPhone15Pro"/>
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#GalaxyS24Ultra"/>
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#ROGZephyrus"/>
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#SonyHeadphones"/>
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#AnkerCharger"/>
+  </owl:distinctMembers></owl:AllDifferent>
+
+  <!-- CUSTOMERS -->
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Customer_Ali">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Customer"/>
+    <rdfs:label>Ali Hassan</rdfs:label>
+    <ec:hasOrderCount rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">4</ec:hasOrderCount>
+    <ec:purchases rdf:resource="http://www.example.org/ecommerce#ROGZephyrus"/>
+    <ec:purchases rdf:resource="http://www.example.org/ecommerce#SonyHeadphones"/>
+    <ec:placesOrder rdf:resource="http://www.example.org/ecommerce#Order001"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Customer_Sara">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Customer"/>
+    <rdfs:label>Sara Ahmed</rdfs:label>
+    <ec:hasOrderCount rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</ec:hasOrderCount>
+    <ec:purchases rdf:resource="http://www.example.org/ecommerce#MacBookPro"/>
+    <ec:purchases rdf:resource="http://www.example.org/ecommerce#iPhone15Pro"/>
+    <ec:placesOrder rdf:resource="http://www.example.org/ecommerce#Order002"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Customer_Riya">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Customer"/>
+    <rdfs:label>Riya Sharma</rdfs:label>
+    <ec:hasOrderCount rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</ec:hasOrderCount>
+    <ec:purchases rdf:resource="http://www.example.org/ecommerce#ROGZephyrus"/>
+    <ec:placesOrder rdf:resource="http://www.example.org/ecommerce#Order003"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Customer_Lena">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Customer"/>
+    <rdfs:label>Lena Mueller</rdfs:label>
+    <ec:hasOrderCount rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">5</ec:hasOrderCount>
+    <ec:purchases rdf:resource="http://www.example.org/ecommerce#SonyHeadphones"/>
+    <ec:placesOrder rdf:resource="http://www.example.org/ecommerce#Order004"/>
   </owl:NamedIndividual>
 
-  <owl:NamedIndividual rdf:about="&ec;Asus">
-    <rdf:type rdf:resource="&ec;Brand"/>
-    <rdfs:label xml:lang="en">Asus</rdfs:label>
-    <ec:hasName>ASUSTeK Computer Inc.</ec:hasName>
-    <ec:hasCountryOfOrigin>Taiwan</ec:hasCountryOfOrigin>
-    <ec:hasFoundedYear rdf:datatype="&xsd;gYear">1989</ec:hasFoundedYear>
-    <ec:hasDescription xml:lang="en">Taiwanese multinational known for motherboards, laptops, and the ROG gaming line.</ec:hasDescription>
-  </owl:NamedIndividual>
+  <owl:AllDifferent><owl:distinctMembers rdf:parseType="Collection">
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#Customer_Ali"/>
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#Customer_Sara"/>
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#Customer_Riya"/>
+    <rdf:Description rdf:about="http://www.example.org/ecommerce#Customer_Lena"/>
+  </owl:distinctMembers></owl:AllDifferent>
 
-  <owl:NamedIndividual rdf:about="&ec;Sony">
-    <rdf:type rdf:resource="&ec;Brand"/>
-    <rdfs:label xml:lang="en">Sony</rdfs:label>
-    <ec:hasName>Sony Corporation</ec:hasName>
-    <ec:hasCountryOfOrigin>Japan</ec:hasCountryOfOrigin>
-    <ec:hasFoundedYear rdf:datatype="&xsd;gYear">1946</ec:hasFoundedYear>
-    <ec:hasDescription xml:lang="en">Japanese multinational specialising in consumer electronics, gaming, and entertainment.</ec:hasDescription>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Anker">
-    <rdf:type rdf:resource="&ec;Brand"/>
-    <rdfs:label xml:lang="en">Anker</rdfs:label>
-    <ec:hasName>Anker Innovations</ec:hasName>
-    <ec:hasCountryOfOrigin>China</ec:hasCountryOfOrigin>
-    <ec:hasFoundedYear rdf:datatype="&xsd;gYear">2011</ec:hasFoundedYear>
-    <ec:hasDescription xml:lang="en">Consumer electronics brand specialising in charging technology and mobile accessories.</ec:hasDescription>
-  </owl:NamedIndividual>
-
-  <owl:AllDifferent>
-    <owl:distinctMembers rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Apple"/>
-      <rdf:Description rdf:about="&ec;Samsung"/>
-      <rdf:Description rdf:about="&ec;Asus"/>
-      <rdf:Description rdf:about="&ec;Sony"/>
-      <rdf:Description rdf:about="&ec;Anker"/>
-    </owl:distinctMembers>
-  </owl:AllDifferent>
-
-  <!-- ============================================================
-       CATEGORY INDIVIDUALS (13, with transitive hierarchy)
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Technology">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Technology</rdfs:label>
-    <ec:hasName>Technology</ec:hasName>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Electronics"/>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Accessories"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Electronics">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Electronics</rdfs:label>
-    <ec:hasName>Electronics</ec:hasName>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Laptops"/>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Smartphones"/>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Tablets"/>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Audio"/>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Wearables"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Laptops">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Laptops</rdfs:label>
-    <ec:hasName>Laptops</ec:hasName>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Gaming"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Gaming">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Gaming</rdfs:label>
-    <ec:hasName>Gaming</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Smartphones">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Smartphones</rdfs:label>
-    <ec:hasName>Smartphones</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Tablets">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Tablets</rdfs:label>
-    <ec:hasName>Tablets</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Audio">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Audio</rdfs:label>
-    <ec:hasName>Audio</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Wearables">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Wearables</rdfs:label>
-    <ec:hasName>Wearables</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Accessories">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Accessories</rdfs:label>
-    <ec:hasName>Accessories</ec:hasName>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Cables"/>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Chargers"/>
-    <ec:hasSubcategory rdf:resource="&ec;Cat_Cases"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Cables">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Cables</rdfs:label>
-    <ec:hasName>Cables</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Chargers">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Chargers</rdfs:label>
-    <ec:hasName>Chargers</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Cat_Cases">
-    <rdf:type rdf:resource="&ec;Category"/>
-    <rdfs:label xml:lang="en">Cases</rdfs:label>
-    <ec:hasName>Cases</ec:hasName>
-  </owl:NamedIndividual>
-
-  <!-- ============================================================
-       PRODUCT INDIVIDUALS (10)
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;MacBookPro">
-    <rdf:type rdf:resource="&ec;Laptop"/>
-    <rdfs:label xml:lang="en">MacBook Pro M3 Max</rdfs:label>
-    <ec:hasName>Apple MacBook Pro 16-inch M3 Max</ec:hasName>
-    <ec:hasSKU>APPL-MBP-M3MAX-16</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">2499.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">2499.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">0.0</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">35</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">2.14</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.9</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">Apple M3 Max chip, 36 GB unified memory, 1 TB SSD, Liquid Retina XDR display.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Apple"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Laptops"/>
-    <ec:isGamingLaptop rdf:datatype="&xsd;boolean">false</ec:isGamingLaptop>
-    <ec:hasRelatedProduct rdf:resource="&ec;AppleUSBCCable"/>
-    <ec:hasRelatedProduct rdf:resource="&ec;AppleWatch"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;iPhone15Pro">
-    <rdf:type rdf:resource="&ec;Smartphone"/>
-    <rdfs:label xml:lang="en">iPhone 15 Pro</rdfs:label>
-    <ec:hasName>Apple iPhone 15 Pro 256 GB</ec:hasName>
-    <ec:hasSKU>APPL-IP15PRO-256</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">1199.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">1199.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">0.0</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">120</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">0.187</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.8</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">A17 Pro chip, titanium frame, 48 MP camera, USB-C.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Apple"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Smartphones"/>
-    <ec:hasRelatedProduct rdf:resource="&ec;AppleUSBCCable"/>
-    <ec:hasRelatedProduct rdf:resource="&ec;iPhone15Case"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;GalaxyS24Ultra">
-    <rdf:type rdf:resource="&ec;Smartphone"/>
-    <rdfs:label xml:lang="en">Galaxy S24 Ultra</rdfs:label>
-    <ec:hasName>Samsung Galaxy S24 Ultra 512 GB</ec:hasName>
-    <ec:hasSKU>SAMS-S24U-512</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">899.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">999.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">10.0</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">200</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">0.232</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.6</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">Snapdragon 8 Gen 3, 200 MP quad camera, integrated S Pen, titanium chassis.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Samsung"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Smartphones"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;ROGZephyrus">
-    <rdf:type rdf:resource="&ec;Laptop"/>
-    <rdfs:label xml:lang="en">ROG Zephyrus G16</rdfs:label>
-    <ec:hasName>ASUS ROG Zephyrus G16 Gaming Laptop RTX 4080</ec:hasName>
-    <ec:hasSKU>ASUS-ROG-G16-4080</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">1799.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">1999.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">10.0</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">50</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">2.1</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.8</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">AMD Ryzen 9, NVIDIA RTX 4080, 240 Hz OLED, ROG Intelligent Cooling.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Asus"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Gaming"/>
-    <ec:isGamingLaptop rdf:datatype="&xsd;boolean">true</ec:isGamingLaptop>
-    <ec:hasRelatedProduct rdf:resource="&ec;SonyHeadphones"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;iPadPro">
-    <rdf:type rdf:resource="&ec;Tablet"/>
-    <rdfs:label xml:lang="en">iPad Pro M4</rdfs:label>
-    <ec:hasName>Apple iPad Pro 13-inch M4 Wi-Fi 256 GB</ec:hasName>
-    <ec:hasSKU>APPL-IPADPRO-M4-256</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">1099.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">1099.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">0.0</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">80</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">0.582</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.7</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">Apple M4 chip, Ultra Retina XDR OLED display, Apple Pencil Pro support.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Apple"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Tablets"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;SonyHeadphones">
-    <rdf:type rdf:resource="&ec;Headphones"/>
-    <rdfs:label xml:lang="en">Sony WH-1000XM5</rdfs:label>
-    <ec:hasName>Sony WH-1000XM5 Wireless Noise Cancelling Headphones</ec:hasName>
-    <ec:hasSKU>SONY-WH1000XM5-BLK</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">349.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">399.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">12.5</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">150</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">0.25</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.7</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">Industry-leading ANC, 30-hour battery, multipoint Bluetooth.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Sony"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Audio"/>
-    <ec:hasRelatedProduct rdf:resource="&ec;ROGZephyrus"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;AppleWatch">
-    <rdf:type rdf:resource="&ec;SmartWatch"/>
-    <rdfs:label xml:lang="en">Apple Watch Series 9</rdfs:label>
-    <ec:hasName>Apple Watch Series 9 GPS 45mm Midnight</ec:hasName>
-    <ec:hasSKU>APPL-WS9-45-MID</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">499.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">499.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">0.0</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">220</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">0.039</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.6</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">S9 chip, blood oxygen sensor, ECG, crash detection, double-tap gesture.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Apple"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Wearables"/>
-    <ec:hasRelatedProduct rdf:resource="&ec;MacBookPro"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;AppleUSBCCable">
-    <rdf:type rdf:resource="&ec;Cable"/>
-    <rdfs:label xml:lang="en">Apple USB-C Charge Cable 2m</rdfs:label>
-    <ec:hasName>Apple USB-C Charge Cable (2 m)</ec:hasName>
-    <ec:hasSKU>APPL-USBC-2M</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">29.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">29.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">0.0</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">500</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">0.05</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.3</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">MFi-certified USB-C to USB-C, 60W, 2 m, braided nylon.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Apple"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Cables"/>
-    <ec:hasRelatedProduct rdf:resource="&ec;MacBookPro"/>
-    <ec:hasRelatedProduct rdf:resource="&ec;iPhone15Pro"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;AnkerCharger">
-    <rdf:type rdf:resource="&ec;Charger"/>
-    <rdfs:label xml:lang="en">Anker 67W GaN Charger</rdfs:label>
-    <ec:hasName>Anker Prime 67W GaN USB-C Charger (3-Port)</ec:hasName>
-    <ec:hasSKU>ANKR-GAN-67W-3P</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">55.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">65.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">15.38</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">300</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">0.18</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.6</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">67W GaN, 3 ports (2xUSB-C, 1xUSB-A), foldable plug.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Anker"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Chargers"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;iPhone15Case">
-    <rdf:type rdf:resource="&ec;Case"/>
-    <rdfs:label xml:lang="en">Apple iPhone 15 Silicone Case</rdfs:label>
-    <ec:hasName>Apple iPhone 15 Pro Silicone Case with MagSafe</ec:hasName>
-    <ec:hasSKU>APPL-IP15-SIL-MGSFBLK</ec:hasSKU>
-    <ec:hasPrice rdf:datatype="&xsd;decimal">49.00</ec:hasPrice>
-    <ec:hasOriginalPrice rdf:datatype="&xsd;decimal">49.00</ec:hasOriginalPrice>
-    <ec:hasDiscountPercentage rdf:datatype="&xsd;decimal">0.0</ec:hasDiscountPercentage>
-    <ec:hasStockQuantity rdf:datatype="&xsd;nonNegativeInteger">400</ec:hasStockQuantity>
-    <ec:hasWeight rdf:datatype="&xsd;decimal">0.04</ec:hasWeight>
-    <ec:hasAggregateRating rdf:datatype="&xsd;decimal">4.4</ec:hasAggregateRating>
-    <ec:hasDescription xml:lang="en">Liquid silicone exterior, microfibre lining, MagSafe compatible.</ec:hasDescription>
-    <ec:manufacturedBy rdf:resource="&ec;Apple"/>
-    <ec:belongsToCategory rdf:resource="&ec;Cat_Cases"/>
-    <ec:hasRelatedProduct rdf:resource="&ec;iPhone15Pro"/>
-  </owl:NamedIndividual>
-
-  <owl:AllDifferent>
-    <owl:distinctMembers rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;MacBookPro"/>
-      <rdf:Description rdf:about="&ec;iPhone15Pro"/>
-      <rdf:Description rdf:about="&ec;GalaxyS24Ultra"/>
-      <rdf:Description rdf:about="&ec;ROGZephyrus"/>
-      <rdf:Description rdf:about="&ec;iPadPro"/>
-      <rdf:Description rdf:about="&ec;SonyHeadphones"/>
-      <rdf:Description rdf:about="&ec;AppleWatch"/>
-      <rdf:Description rdf:about="&ec;AppleUSBCCable"/>
-      <rdf:Description rdf:about="&ec;AnkerCharger"/>
-      <rdf:Description rdf:about="&ec;iPhone15Case"/>
-    </owl:distinctMembers>
-  </owl:AllDifferent>
-
-  <!-- ============================================================
-       CUSTOMER INDIVIDUALS (5)
-       ============================================================ -->
-
-  <!-- Customer_Ali: ROGZephyrus+Sony → GamerCustomer; orderCount=4 → FrequentBuyer → LoyalCustomer -->
-  <owl:NamedIndividual rdf:about="&ec;Customer_Ali">
-    <rdf:type rdf:resource="&ec;Customer"/>
-    <rdfs:label xml:lang="en">Customer Ali</rdfs:label>
-    <ec:hasCustomerID>CUST-001</ec:hasCustomerID>
-    <ec:hasName>Ali Hassan</ec:hasName>
-    <ec:hasEmail>ali.hassan@email.com</ec:hasEmail>
-    <ec:hasAddress>14 King Fahd Road, Riyadh, Saudi Arabia</ec:hasAddress>
-    <ec:hasOrderCount rdf:datatype="&xsd;nonNegativeInteger">4</ec:hasOrderCount>
-    <ec:purchases rdf:resource="&ec;ROGZephyrus"/>
-    <ec:purchases rdf:resource="&ec;SonyHeadphones"/>
-    <ec:purchases rdf:resource="&ec;AppleUSBCCable"/>
-    <ec:placesOrder rdf:resource="&ec;Order001"/>
-    <ec:placesOrder rdf:resource="&ec;Order005"/>
-    <ec:writesReview rdf:resource="&ec;Review001"/>
-    <ec:writesReview rdf:resource="&ec;Review005"/>
-  </owl:NamedIndividual>
-
-  <!-- Customer_Sara: MacBook+iPhone+iPad → all Apple → prefersBrand Apple; orderCount=1 -->
-  <owl:NamedIndividual rdf:about="&ec;Customer_Sara">
-    <rdf:type rdf:resource="&ec;Customer"/>
-    <rdfs:label xml:lang="en">Customer Sara</rdfs:label>
-    <ec:hasCustomerID>CUST-002</ec:hasCustomerID>
-    <ec:hasName>Sara Ahmed</ec:hasName>
-    <ec:hasEmail>sara.ahmed@email.com</ec:hasEmail>
-    <ec:hasAddress>7 Zamalek Street, Cairo, Egypt</ec:hasAddress>
-    <ec:hasOrderCount rdf:datatype="&xsd;nonNegativeInteger">1</ec:hasOrderCount>
-    <ec:purchases rdf:resource="&ec;MacBookPro"/>
-    <ec:purchases rdf:resource="&ec;iPhone15Pro"/>
-    <ec:purchases rdf:resource="&ec;iPadPro"/>
-    <ec:placesOrder rdf:resource="&ec;Order002"/>
-    <ec:writesReview rdf:resource="&ec;Review002"/>
-    <ec:writesReview rdf:resource="&ec;Review003"/>
-  </owl:NamedIndividual>
-
-  <!-- Customer_Omar: Galaxy+Anker; orderCount=2 -->
-  <owl:NamedIndividual rdf:about="&ec;Customer_Omar">
-    <rdf:type rdf:resource="&ec;Customer"/>
-    <rdfs:label xml:lang="en">Customer Omar</rdfs:label>
-    <ec:hasCustomerID>CUST-003</ec:hasCustomerID>
-    <ec:hasName>Omar Khalid</ec:hasName>
-    <ec:hasEmail>omar.khalid@email.com</ec:hasEmail>
-    <ec:hasAddress>22 Bostan Street, Tehran, Iran</ec:hasAddress>
-    <ec:hasOrderCount rdf:datatype="&xsd;nonNegativeInteger">2</ec:hasOrderCount>
-    <ec:purchases rdf:resource="&ec;GalaxyS24Ultra"/>
-    <ec:purchases rdf:resource="&ec;AnkerCharger"/>
-    <ec:placesOrder rdf:resource="&ec;Order003"/>
-    <ec:writesReview rdf:resource="&ec;Review004"/>
-  </owl:NamedIndividual>
-
-  <!-- Customer_Lena: Sony+AppleWatch+Case; orderCount=5 → FrequentBuyer -->
-  <owl:NamedIndividual rdf:about="&ec;Customer_Lena">
-    <rdf:type rdf:resource="&ec;Customer"/>
-    <rdfs:label xml:lang="en">Customer Lena</rdfs:label>
-    <ec:hasCustomerID>CUST-004</ec:hasCustomerID>
-    <ec:hasName>Lena Mueller</ec:hasName>
-    <ec:hasEmail>lena.mueller@email.de</ec:hasEmail>
-    <ec:hasAddress>Unter den Linden 18, Berlin, Germany</ec:hasAddress>
-    <ec:hasOrderCount rdf:datatype="&xsd;nonNegativeInteger">5</ec:hasOrderCount>
-    <ec:purchases rdf:resource="&ec;SonyHeadphones"/>
-    <ec:purchases rdf:resource="&ec;AppleWatch"/>
-    <ec:purchases rdf:resource="&ec;iPhone15Case"/>
-    <ec:placesOrder rdf:resource="&ec;Order004"/>
-    <ec:writesReview rdf:resource="&ec;Review006"/>
-  </owl:NamedIndividual>
-
-  <!-- Customer_Riya: ROGZephyrus+Anker+Sony; orderCount=3 → GamerCustomer + FrequentBuyer → LoyalCustomer -->
-  <owl:NamedIndividual rdf:about="&ec;Customer_Riya">
-    <rdf:type rdf:resource="&ec;Customer"/>
-    <rdfs:label xml:lang="en">Customer Riya</rdfs:label>
-    <ec:hasCustomerID>CUST-005</ec:hasCustomerID>
-    <ec:hasName>Riya Sharma</ec:hasName>
-    <ec:hasEmail>riya.sharma@email.in</ec:hasEmail>
-    <ec:hasAddress>42 MG Road, Bengaluru, India</ec:hasAddress>
-    <ec:hasOrderCount rdf:datatype="&xsd;nonNegativeInteger">3</ec:hasOrderCount>
-    <ec:purchases rdf:resource="&ec;ROGZephyrus"/>
-    <ec:purchases rdf:resource="&ec;AnkerCharger"/>
-    <ec:purchases rdf:resource="&ec;SonyHeadphones"/>
-    <ec:placesOrder rdf:resource="&ec;Order006"/>
-  </owl:NamedIndividual>
-
-  <owl:AllDifferent>
-    <owl:distinctMembers rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Customer_Ali"/>
-      <rdf:Description rdf:about="&ec;Customer_Sara"/>
-      <rdf:Description rdf:about="&ec;Customer_Omar"/>
-      <rdf:Description rdf:about="&ec;Customer_Lena"/>
-      <rdf:Description rdf:about="&ec;Customer_Riya"/>
-    </owl:distinctMembers>
-  </owl:AllDifferent>
-
-  <!-- ============================================================
-       SELLER INDIVIDUALS (2)
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;Seller_TechZone">
-    <rdf:type rdf:resource="&ec;Seller"/>
-    <rdfs:label xml:lang="en">TechZone Store</rdfs:label>
-    <ec:hasSellerID>SELL-001</ec:hasSellerID>
-    <ec:hasName>TechZone Electronics</ec:hasName>
-    <ec:hasEmail>sales@techzone.com</ec:hasEmail>
-    <ec:hasPhoneNumber>+1-800-TECHZONE</ec:hasPhoneNumber>
-    <ec:hasAddress>1 Silicon Valley Blvd, San Jose, CA, USA</ec:hasAddress>
-    <ec:sells rdf:resource="&ec;MacBookPro"/>
-    <ec:sells rdf:resource="&ec;iPhone15Pro"/>
-    <ec:sells rdf:resource="&ec;iPadPro"/>
-    <ec:sells rdf:resource="&ec;ROGZephyrus"/>
-    <ec:sells rdf:resource="&ec;AppleWatch"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Seller_GadgetHub">
-    <rdf:type rdf:resource="&ec;Seller"/>
-    <rdfs:label xml:lang="en">GadgetHub</rdfs:label>
-    <ec:hasSellerID>SELL-002</ec:hasSellerID>
-    <ec:hasName>GadgetHub Online</ec:hasName>
-    <ec:hasEmail>info@gadgethub.com</ec:hasEmail>
-    <ec:hasPhoneNumber>+44-20-9999-1234</ec:hasPhoneNumber>
-    <ec:hasAddress>77 Oxford Street, London, UK</ec:hasAddress>
-    <ec:sells rdf:resource="&ec;GalaxyS24Ultra"/>
-    <ec:sells rdf:resource="&ec;SonyHeadphones"/>
-    <ec:sells rdf:resource="&ec;AnkerCharger"/>
-    <ec:sells rdf:resource="&ec;AppleUSBCCable"/>
-    <ec:sells rdf:resource="&ec;iPhone15Case"/>
-  </owl:NamedIndividual>
-
-  <owl:AllDifferent>
-    <owl:distinctMembers rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Seller_TechZone"/>
-      <rdf:Description rdf:about="&ec;Seller_GadgetHub"/>
-    </owl:distinctMembers>
-  </owl:AllDifferent>
-
-  <!-- ============================================================
-       PAYMENT METHOD INDIVIDUALS (5)
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;PM_Visa">
-    <rdf:type rdf:resource="&ec;CreditCard"/>
-    <rdfs:label xml:lang="en">Visa Credit Card</rdfs:label>
-    <ec:hasName>Visa Credit Card</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;PM_Mastercard">
-    <rdf:type rdf:resource="&ec;CreditCard"/>
-    <rdfs:label xml:lang="en">Mastercard</rdfs:label>
-    <ec:hasName>Mastercard Credit Card</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;PM_PayPal">
-    <rdf:type rdf:resource="&ec;PayPal"/>
-    <rdfs:label xml:lang="en">PayPal Wallet</rdfs:label>
-    <ec:hasName>PayPal Digital Wallet</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;PM_BankTransfer">
-    <rdf:type rdf:resource="&ec;BankTransfer"/>
-    <rdfs:label xml:lang="en">SEPA Bank Transfer</rdfs:label>
-    <ec:hasName>SEPA Bank Transfer</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;PM_Bitcoin">
-    <rdf:type rdf:resource="&ec;CryptoCurrency"/>
-    <rdfs:label xml:lang="en">Bitcoin</rdfs:label>
-    <ec:hasName>Bitcoin BTC Payment</ec:hasName>
-  </owl:NamedIndividual>
-
-  <owl:AllDifferent>
-    <owl:distinctMembers rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;PM_Visa"/>
-      <rdf:Description rdf:about="&ec;PM_Mastercard"/>
-      <rdf:Description rdf:about="&ec;PM_PayPal"/>
-      <rdf:Description rdf:about="&ec;PM_BankTransfer"/>
-      <rdf:Description rdf:about="&ec;PM_Bitcoin"/>
-    </owl:distinctMembers>
-  </owl:AllDifferent>
-
-  <!-- ============================================================
-       ORDER INDIVIDUALS (6)
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;Order001">
-    <rdf:type rdf:resource="&ec;Order"/>
-    <rdfs:label xml:lang="en">Order001</rdfs:label>
+  <!-- ORDERS -->
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Order001">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Order"/>
     <ec:hasOrderID>ORD-001</ec:hasOrderID>
-    <ec:hasOrderDate rdf:datatype="&xsd;date">2025-01-15</ec:hasOrderDate>
-    <ec:hasTotalAmount rdf:datatype="&xsd;decimal">2148.00</ec:hasTotalAmount>
+    <ec:hasTotalAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2148.00</ec:hasTotalAmount>
     <ec:hasDeliveryStatus>Delivered</ec:hasDeliveryStatus>
-    <ec:containsProduct rdf:resource="&ec;ROGZephyrus"/>
-    <ec:containsProduct rdf:resource="&ec;SonyHeadphones"/>
-    <ec:usesPaymentMethod rdf:resource="&ec;PM_Visa"/>
-    <ec:isOrderOf rdf:resource="&ec;Customer_Ali"/>
+    <ec:containsProduct rdf:resource="http://www.example.org/ecommerce#ROGZephyrus"/>
+    <ec:containsProduct rdf:resource="http://www.example.org/ecommerce#SonyHeadphones"/>
+    <ec:usesPaymentMethod rdf:resource="http://www.example.org/ecommerce#PM_Visa"/>
+    <ec:isOrderOf rdf:resource="http://www.example.org/ecommerce#Customer_Ali"/>
   </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Order002">
-    <rdf:type rdf:resource="&ec;Order"/>
-    <rdfs:label xml:lang="en">Order002</rdfs:label>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Order002">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Order"/>
     <ec:hasOrderID>ORD-002</ec:hasOrderID>
-    <ec:hasOrderDate rdf:datatype="&xsd;date">2025-02-03</ec:hasOrderDate>
-    <ec:hasTotalAmount rdf:datatype="&xsd;decimal">4797.00</ec:hasTotalAmount>
+    <ec:hasTotalAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4797.00</ec:hasTotalAmount>
     <ec:hasDeliveryStatus>Delivered</ec:hasDeliveryStatus>
-    <ec:containsProduct rdf:resource="&ec;MacBookPro"/>
-    <ec:containsProduct rdf:resource="&ec;iPhone15Pro"/>
-    <ec:containsProduct rdf:resource="&ec;iPadPro"/>
-    <ec:usesPaymentMethod rdf:resource="&ec;PM_PayPal"/>
-    <ec:isOrderOf rdf:resource="&ec;Customer_Sara"/>
+    <ec:containsProduct rdf:resource="http://www.example.org/ecommerce#MacBookPro"/>
+    <ec:containsProduct rdf:resource="http://www.example.org/ecommerce#iPhone15Pro"/>
+    <ec:usesPaymentMethod rdf:resource="http://www.example.org/ecommerce#PM_PayPal"/>
+    <ec:isOrderOf rdf:resource="http://www.example.org/ecommerce#Customer_Sara"/>
   </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Order003">
-    <rdf:type rdf:resource="&ec;Order"/>
-    <rdfs:label xml:lang="en">Order003</rdfs:label>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Order003">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Order"/>
     <ec:hasOrderID>ORD-003</ec:hasOrderID>
-    <ec:hasOrderDate rdf:datatype="&xsd;date">2025-03-10</ec:hasOrderDate>
-    <ec:hasTotalAmount rdf:datatype="&xsd;decimal">954.00</ec:hasTotalAmount>
-    <ec:hasDeliveryStatus>Delivered</ec:hasDeliveryStatus>
-    <ec:containsProduct rdf:resource="&ec;GalaxyS24Ultra"/>
-    <ec:containsProduct rdf:resource="&ec;AnkerCharger"/>
-    <ec:usesPaymentMethod rdf:resource="&ec;PM_BankTransfer"/>
-    <ec:isOrderOf rdf:resource="&ec;Customer_Omar"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Order004">
-    <rdf:type rdf:resource="&ec;Order"/>
-    <rdfs:label xml:lang="en">Order004</rdfs:label>
-    <ec:hasOrderID>ORD-004</ec:hasOrderID>
-    <ec:hasOrderDate rdf:datatype="&xsd;date">2025-03-22</ec:hasOrderDate>
-    <ec:hasTotalAmount rdf:datatype="&xsd;decimal">897.00</ec:hasTotalAmount>
-    <ec:hasDeliveryStatus>Delivered</ec:hasDeliveryStatus>
-    <ec:containsProduct rdf:resource="&ec;SonyHeadphones"/>
-    <ec:containsProduct rdf:resource="&ec;AppleWatch"/>
-    <ec:containsProduct rdf:resource="&ec;iPhone15Case"/>
-    <ec:usesPaymentMethod rdf:resource="&ec;PM_Mastercard"/>
-    <ec:isOrderOf rdf:resource="&ec;Customer_Lena"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Order005">
-    <rdf:type rdf:resource="&ec;Order"/>
-    <rdfs:label xml:lang="en">Order005</rdfs:label>
-    <ec:hasOrderID>ORD-005</ec:hasOrderID>
-    <ec:hasOrderDate rdf:datatype="&xsd;date">2025-04-05</ec:hasOrderDate>
-    <ec:hasTotalAmount rdf:datatype="&xsd;decimal">29.00</ec:hasTotalAmount>
-    <ec:hasDeliveryStatus>Shipped</ec:hasDeliveryStatus>
-    <ec:containsProduct rdf:resource="&ec;AppleUSBCCable"/>
-    <ec:usesPaymentMethod rdf:resource="&ec;PM_Visa"/>
-    <ec:isOrderOf rdf:resource="&ec;Customer_Ali"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Order006">
-    <rdf:type rdf:resource="&ec;Order"/>
-    <rdfs:label xml:lang="en">Order006</rdfs:label>
-    <ec:hasOrderID>ORD-006</ec:hasOrderID>
-    <ec:hasOrderDate rdf:datatype="&xsd;date">2025-04-18</ec:hasOrderDate>
-    <ec:hasTotalAmount rdf:datatype="&xsd;decimal">2203.00</ec:hasTotalAmount>
+    <ec:hasTotalAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1799.00</ec:hasTotalAmount>
     <ec:hasDeliveryStatus>Processing</ec:hasDeliveryStatus>
-    <ec:containsProduct rdf:resource="&ec;ROGZephyrus"/>
-    <ec:containsProduct rdf:resource="&ec;SonyHeadphones"/>
-    <ec:containsProduct rdf:resource="&ec;AnkerCharger"/>
-    <ec:usesPaymentMethod rdf:resource="&ec;PM_Bitcoin"/>
-    <ec:isOrderOf rdf:resource="&ec;Customer_Riya"/>
+    <ec:containsProduct rdf:resource="http://www.example.org/ecommerce#ROGZephyrus"/>
+    <ec:usesPaymentMethod rdf:resource="http://www.example.org/ecommerce#PM_Bitcoin"/>
+    <ec:isOrderOf rdf:resource="http://www.example.org/ecommerce#Customer_Riya"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Order004">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Order"/>
+    <ec:hasOrderID>ORD-004</ec:hasOrderID>
+    <ec:hasTotalAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">349.00</ec:hasTotalAmount>
+    <ec:hasDeliveryStatus>Shipped</ec:hasDeliveryStatus>
+    <ec:containsProduct rdf:resource="http://www.example.org/ecommerce#SonyHeadphones"/>
+    <ec:usesPaymentMethod rdf:resource="http://www.example.org/ecommerce#PM_Mastercard"/>
+    <ec:isOrderOf rdf:resource="http://www.example.org/ecommerce#Customer_Lena"/>
   </owl:NamedIndividual>
 
-  <owl:AllDifferent>
-    <owl:distinctMembers rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Order001"/>
-      <rdf:Description rdf:about="&ec;Order002"/>
-      <rdf:Description rdf:about="&ec;Order003"/>
-      <rdf:Description rdf:about="&ec;Order004"/>
-      <rdf:Description rdf:about="&ec;Order005"/>
-      <rdf:Description rdf:about="&ec;Order006"/>
-    </owl:distinctMembers>
-  </owl:AllDifferent>
+  <!-- PAYMENT METHODS -->
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#PM_Visa"><rdf:type rdf:resource="http://www.example.org/ecommerce#CreditCard"/><rdfs:label>Visa</rdfs:label></owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#PM_Mastercard"><rdf:type rdf:resource="http://www.example.org/ecommerce#CreditCard"/><rdfs:label>Mastercard</rdfs:label></owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#PM_PayPal"><rdf:type rdf:resource="http://www.example.org/ecommerce#PayPal"/><rdfs:label>PayPal</rdfs:label></owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#PM_Bitcoin"><rdf:type rdf:resource="http://www.example.org/ecommerce#CryptoCurrency"/><rdfs:label>Bitcoin</rdfs:label></owl:NamedIndividual>
 
-  <!-- ============================================================
-       REVIEW INDIVIDUALS (6, all VerifiedReview)
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;Review001">
-    <rdf:type rdf:resource="&ec;Review"/>
-    <rdfs:label xml:lang="en">Review001 - ROG Zephyrus by Ali</rdfs:label>
-    <ec:hasRating rdf:datatype="&xsd;decimal">4.8</ec:hasRating>
-    <ec:isVerifiedPurchase rdf:datatype="&xsd;boolean">true</ec:isVerifiedPurchase>
-    <ec:hasReviewText xml:lang="en">Exceptional gaming performance across every AAA title. The 240 Hz OLED panel is transformative, and ROG thermal management keeps the chassis cool under sustained load. Build quality surpasses every Windows laptop I have owned.</ec:hasReviewText>
-    <ec:reviewsProduct rdf:resource="&ec;ROGZephyrus"/>
-    <ec:isWrittenBy rdf:resource="&ec;Customer_Ali"/>
+  <!-- REVIEWS -->
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Review001">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Review"/>
+    <ec:hasRating rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.8</ec:hasRating>
+    <ec:isVerifiedPurchase rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ec:isVerifiedPurchase>
+    <ec:reviewsProduct rdf:resource="http://www.example.org/ecommerce#ROGZephyrus"/>
   </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Review002">
-    <rdf:type rdf:resource="&ec;Review"/>
-    <rdfs:label xml:lang="en">Review002 - MacBook Pro by Sara</rdfs:label>
-    <ec:hasRating rdf:datatype="&xsd;decimal">4.9</ec:hasRating>
-    <ec:isVerifiedPurchase rdf:datatype="&xsd;boolean">true</ec:isVerifiedPurchase>
-    <ec:hasReviewText xml:lang="en">The M3 Max chip handles large RNA-seq datasets that previously required overnight runs. Compilation, data wrangling, and visualisation all complete in a fraction of the time. Battery remains strong under heavy computation. An indispensable research machine.</ec:hasReviewText>
-    <ec:reviewsProduct rdf:resource="&ec;MacBookPro"/>
-    <ec:isWrittenBy rdf:resource="&ec;Customer_Sara"/>
+  <owl:NamedIndividual rdf:about="http://www.example.org/ecommerce#Review002">
+    <rdf:type rdf:resource="http://www.example.org/ecommerce#Review"/>
+    <ec:hasRating rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.9</ec:hasRating>
+    <ec:isVerifiedPurchase rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ec:isVerifiedPurchase>
+    <ec:reviewsProduct rdf:resource="http://www.example.org/ecommerce#MacBookPro"/>
   </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Review003">
-    <rdf:type rdf:resource="&ec;Review"/>
-    <rdfs:label xml:lang="en">Review003 - iPhone 15 Pro by Sara</rdfs:label>
-    <ec:hasRating rdf:datatype="&xsd;decimal">4.7</ec:hasRating>
-    <ec:isVerifiedPurchase rdf:datatype="&xsd;boolean">true</ec:isVerifiedPurchase>
-    <ec:hasReviewText xml:lang="en">Titanium frame feels premium without adding weight. The camera system is excellent for scientific photo documentation. USB-C integration with the Mac workflow is seamless.</ec:hasReviewText>
-    <ec:reviewsProduct rdf:resource="&ec;iPhone15Pro"/>
-    <ec:isWrittenBy rdf:resource="&ec;Customer_Sara"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Review004">
-    <rdf:type rdf:resource="&ec;Review"/>
-    <rdfs:label xml:lang="en">Review004 - Galaxy S24 Ultra by Omar</rdfs:label>
-    <ec:hasRating rdf:datatype="&xsd;decimal">4.6</ec:hasRating>
-    <ec:isVerifiedPurchase rdf:datatype="&xsd;boolean">true</ec:isVerifiedPurchase>
-    <ec:hasReviewText xml:lang="en">The 200 MP camera is stunning for landscape and macro work. S Pen integration is fluid and Galaxy AI features add real daily utility. Battery clears two days with moderate use.</ec:hasReviewText>
-    <ec:reviewsProduct rdf:resource="&ec;GalaxyS24Ultra"/>
-    <ec:isWrittenBy rdf:resource="&ec;Customer_Omar"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Review005">
-    <rdf:type rdf:resource="&ec;Review"/>
-    <rdfs:label xml:lang="en">Review005 - Sony WH-1000XM5 by Ali</rdfs:label>
-    <ec:hasRating rdf:datatype="&xsd;decimal">4.7</ec:hasRating>
-    <ec:isVerifiedPurchase rdf:datatype="&xsd;boolean">true</ec:isVerifiedPurchase>
-    <ec:hasReviewText xml:lang="en">Best noise cancellation I have used on any headphone. Pairs effortlessly with the ROG laptop and phone simultaneously. Thirty hours battery is not a marketing claim; I verified it in practice.</ec:hasReviewText>
-    <ec:reviewsProduct rdf:resource="&ec;SonyHeadphones"/>
-    <ec:isWrittenBy rdf:resource="&ec;Customer_Ali"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Review006">
-    <rdf:type rdf:resource="&ec;Review"/>
-    <rdfs:label xml:lang="en">Review006 - Sony WH-1000XM5 by Lena</rdfs:label>
-    <ec:hasRating rdf:datatype="&xsd;decimal">4.8</ec:hasRating>
-    <ec:isVerifiedPurchase rdf:datatype="&xsd;boolean">true</ec:isVerifiedPurchase>
-    <ec:hasReviewText xml:lang="en">Outstanding comfort for long-haul flights. Adaptive ANC adjusts perfectly to aircraft cabin pressure. Multipoint connection between laptop and phone holds without interruption.</ec:hasReviewText>
-    <ec:reviewsProduct rdf:resource="&ec;SonyHeadphones"/>
-    <ec:isWrittenBy rdf:resource="&ec;Customer_Lena"/>
-  </owl:NamedIndividual>
-
-  <owl:AllDifferent>
-    <owl:distinctMembers rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Review001"/>
-      <rdf:Description rdf:about="&ec;Review002"/>
-      <rdf:Description rdf:about="&ec;Review003"/>
-      <rdf:Description rdf:about="&ec;Review004"/>
-      <rdf:Description rdf:about="&ec;Review005"/>
-      <rdf:Description rdf:about="&ec;Review006"/>
-    </owl:distinctMembers>
-  </owl:AllDifferent>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK A: InverseFunctionalProperty
-       Semantics: no two distinct individuals share the same SKU,
-       customerID, sellerID, or orderID value.
-       ============================================================ -->
-
-  <!-- hasSKU is also InverseFunctional: SKU uniquely identifies a product -->
-  <owl:DatatypeProperty rdf:about="&ec;hasSKU">
-    <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
-    <rdfs:comment xml:lang="en">InverseFunctional: no two distinct products share the same SKU string.</rdfs:comment>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasCustomerID">
-    <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
-    <rdfs:comment xml:lang="en">InverseFunctional: customer IDs are globally unique across the platform.</rdfs:comment>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasOrderID">
-    <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
-    <rdfs:comment xml:lang="en">InverseFunctional: order IDs are globally unique transaction identifiers.</rdfs:comment>
-  </owl:DatatypeProperty>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK B: ReflexiveProperty
-       Semantics: every product is compatible with itself
-       (useful for recommendation engine — "also consider" self-link
-       is suppressed at UI level but valid ontologically).
-       ============================================================ -->
-
-  <owl:ObjectProperty rdf:about="&ec;isCompatibleWith">
-    <rdfs:label xml:lang="en">is compatible with</rdfs:label>
-    <skos:definition xml:lang="en">Reflexive compatibility relation between products. Every product is trivially compatible with itself; non-trivial pairs represent confirmed accessory or software compatibility.</skos:definition>
-    <skos:note xml:lang="en">ReflexiveProperty: the reasoner asserts isCompatibleWith(p, p) for every Product p automatically.</skos:note>
-    <rdf:type rdf:resource="&owl;ReflexiveProperty"/>
-    <rdf:type rdf:resource="&owl;SymmetricProperty"/>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-  </owl:ObjectProperty>
-
-  <!-- Assert explicit non-trivial compatibility pairs -->
-  <owl:NamedIndividual rdf:about="&ec;MacBookPro">
-    <ec:isCompatibleWith rdf:resource="&ec;AppleUSBCCable"/>
-    <ec:isCompatibleWith rdf:resource="&ec;AnkerCharger"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;iPhone15Pro">
-    <ec:isCompatibleWith rdf:resource="&ec;iPhone15Case"/>
-    <ec:isCompatibleWith rdf:resource="&ec;AnkerCharger"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;ROGZephyrus">
-    <ec:isCompatibleWith rdf:resource="&ec;AnkerCharger"/>
-  </owl:NamedIndividual>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK C: owl:disjointWith (pairwise, in addition to AllDisjointClasses)
-       Semantics: explicit pairwise disjointness for Protege DL Query clarity.
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;Customer">
-    <owl:disjointWith rdf:resource="&ec;Seller"/>
-    <owl:disjointWith rdf:resource="&ec;Brand"/>
-    <owl:disjointWith rdf:resource="&ec;Product"/>
-    <owl:disjointWith rdf:resource="&ec;Order"/>
-    <owl:disjointWith rdf:resource="&ec;Review"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Product">
-    <owl:disjointWith rdf:resource="&ec;Order"/>
-    <owl:disjointWith rdf:resource="&ec;Review"/>
-    <owl:disjointWith rdf:resource="&ec;Brand"/>
-    <owl:disjointWith rdf:resource="&ec;Category"/>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Order">
-    <owl:disjointWith rdf:resource="&ec;Review"/>
-    <owl:disjointWith rdf:resource="&ec;Brand"/>
-  </owl:Class>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK D: SubPropertyOf (explicit hierarchy on object props)
-       Semantics: purchases is a subproperty of interactsWith (broader);
-       writesReview is a subproperty of interactsWith.
-       ============================================================ -->
-
-  <!-- interactsWith: broadest customer-entity relation -->
-  <owl:ObjectProperty rdf:about="&ec;interactsWith">
-    <rdfs:label xml:lang="en">interacts with</rdfs:label>
-    <skos:definition xml:lang="en">Broadest customer-entity interaction. Purchases, order placement, and review authorship are all specialised forms of customer interaction.</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&owl;Thing"/>
-  </owl:ObjectProperty>
-
-  <!-- purchases SubPropertyOf interactsWith -->
-  <owl:ObjectProperty rdf:about="&ec;purchases">
-    <rdfs:subPropertyOf rdf:resource="&ec;interactsWith"/>
-  </owl:ObjectProperty>
-
-  <!-- placesOrder SubPropertyOf interactsWith -->
-  <owl:ObjectProperty rdf:about="&ec;placesOrder">
-    <rdfs:subPropertyOf rdf:resource="&ec;interactsWith"/>
-  </owl:ObjectProperty>
-
-  <!-- writesReview SubPropertyOf interactsWith -->
-  <owl:ObjectProperty rdf:about="&ec;writesReview">
-    <rdfs:subPropertyOf rdf:resource="&ec;interactsWith"/>
-  </owl:ObjectProperty>
-
-  <!-- SubDataPropertyOf: hasPrice and hasOriginalPrice are both subproperties of hasMonetaryValue -->
-  <owl:DatatypeProperty rdf:about="&ec;hasMonetaryValue">
-    <rdfs:label xml:lang="en">has monetary value</rdfs:label>
-    <skos:definition xml:lang="en">Abstract superProperty for any price-like monetary data property on a Product.</skos:definition>
-    <rdfs:domain rdf:resource="&ec;Product"/>
-    <rdfs:range rdf:resource="&xsd;decimal"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasPrice">
-    <rdfs:subPropertyOf rdf:resource="&ec;hasMonetaryValue"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasOriginalPrice">
-    <rdfs:subPropertyOf rdf:resource="&ec;hasMonetaryValue"/>
-  </owl:DatatypeProperty>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK E: owl:complementOf
-       Semantics: NonPremiumProduct = Product AND NOT PremiumProduct.
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;NonPremiumProduct">
-    <rdfs:label xml:lang="en">NonPremiumProduct</rdfs:label>
-    <skos:definition xml:lang="en">Any Product that is NOT classified as a PremiumProduct (price below $1,000). Defined via complement of PremiumProduct within the Product class.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ14: Which products are not premium?</ec:answersCompetencyQuestion>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Product"/>
-          <owl:Class>
-            <owl:complementOf rdf:resource="&ec;PremiumProduct"/>
-          </owl:Class>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-  <!-- UnverifiedReview = Review AND NOT VerifiedReview -->
-  <owl:Class rdf:about="&ec;UnverifiedReview">
-    <rdfs:label xml:lang="en">UnverifiedReview</rdfs:label>
-    <skos:definition xml:lang="en">A Review that is NOT a VerifiedReview - the author's purchase of the product could not be confirmed by the platform.</skos:definition>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Review"/>
-          <owl:Class>
-            <owl:complementOf rdf:resource="&ec;VerifiedReview"/>
-          </owl:Class>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK F: allValuesFrom (universal restriction)
-       Semantics: AppleExclusiveProduct is a product whose manufacturer
-       is ONLY Apple (all values of manufacturedBy are Apple).
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;AppleExclusiveProduct">
-    <rdfs:label xml:lang="en">AppleExclusiveProduct</rdfs:label>
-    <skos:definition xml:lang="en">A Product for which every manufacturer assertion points to Apple Inc. Universal restriction ensures the class is non-trivially satisfied only by Apple-branded products.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ15: Which products are exclusively manufactured by Apple?</ec:answersCompetencyQuestion>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Product"/>
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;manufacturedBy"/>
-            <owl:allValuesFrom rdf:resource="&ec;Brand"/>
-          </owl:Restriction>
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;manufacturedBy"/>
-            <owl:hasValue rdf:resource="&ec;Apple"/>
-          </owl:Restriction>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-  <!-- PlatformPayment: Order where ALL payment methods are digital (not BankTransfer) -->
-  <owl:Class rdf:about="&ec;DigitalPaymentOrder">
-    <rdfs:label xml:lang="en">DigitalPaymentOrder</rdfs:label>
-    <skos:definition xml:lang="en">An Order whose payment method is universally restricted to non-bank-transfer digital instruments (CreditCard, PayPal, or CryptoCurrency).</skos:definition>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Order"/>
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;usesPaymentMethod"/>
-            <owl:allValuesFrom>
-              <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                  <rdf:Description rdf:about="&ec;CreditCard"/>
-                  <rdf:Description rdf:about="&ec;PayPal"/>
-                  <rdf:Description rdf:about="&ec;CryptoCurrency"/>
-                </owl:unionOf>
-              </owl:Class>
-            </owl:allValuesFrom>
-          </owl:Restriction>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK G: maxQualifiedCardinality
-       Semantics: SingleProductOrder has at most 1 product item.
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;SingleProductOrder">
-    <rdfs:label xml:lang="en">SingleProductOrder</rdfs:label>
-    <skos:definition xml:lang="en">An Order containing exactly one Product - a single-item transaction. Defined by combining minQualifiedCardinality 1 with maxQualifiedCardinality 1.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ16: Which orders contain exactly one product?</ec:answersCompetencyQuestion>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Order"/>
-          <!-- at least 1 -->
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;containsProduct"/>
-            <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
-            <owl:onClass rdf:resource="&ec;Product"/>
-          </owl:Restriction>
-          <!-- at most 1 -->
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;containsProduct"/>
-            <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-            <owl:onClass rdf:resource="&ec;Product"/>
-          </owl:Restriction>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-  <!-- MultiProductOrder: at least 2 products -->
-  <owl:Class rdf:about="&ec;MultiProductOrder">
-    <rdfs:label xml:lang="en">MultiProductOrder</rdfs:label>
-    <skos:definition xml:lang="en">An Order containing two or more distinct Products - a basket transaction.</skos:definition>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:intersectionOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Order"/>
-          <owl:Restriction>
-            <owl:onProperty rdf:resource="&ec;containsProduct"/>
-            <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
-            <owl:onClass rdf:resource="&ec;Product"/>
-          </owl:Restriction>
-        </owl:intersectionOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK H: owl:disjointUnionOf (OWL 2 only)
-       Semantics: Product is the disjoint union of Electronics and Accessories.
-       Every product is either Electronics or Accessories (exhaustive),
-       and nothing is both (disjoint). Covers the declared product universe.
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;Product">
-    <owl:disjointUnionOf rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;Electronics"/>
-      <rdf:Description rdf:about="&ec;Accessories"/>
-    </owl:disjointUnionOf>
-  </owl:Class>
-
-  <!-- PaymentMethod is a disjoint union of all four payment types -->
-  <owl:Class rdf:about="&ec;PaymentMethod">
-    <owl:disjointUnionOf rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;CreditCard"/>
-      <rdf:Description rdf:about="&ec;PayPal"/>
-      <rdf:Description rdf:about="&ec;BankTransfer"/>
-      <rdf:Description rdf:about="&ec;CryptoCurrency"/>
-    </owl:disjointUnionOf>
-  </owl:Class>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK I: Second and third property chain axioms
-       Chain 2: placesOrder o containsProduct → indirectlyPurchases
-         Semantics: if Customer places Order, and Order contains Product,
-         the reasoner infers Customer indirectlyPurchases Product.
-       Chain 3: writesReview o reviewsProduct → reviewedProduct
-         Semantics: Customer writes Review about Product → Customer reviewedProduct Product
-       ============================================================ -->
-
-  <owl:ObjectProperty rdf:about="&ec;indirectlyPurchases">
-    <rdfs:label xml:lang="en">indirectly purchases</rdfs:label>
-    <skos:definition xml:lang="en">Inferred via chain: Customer placesOrder Order, Order containsProduct Product. Bridges the order-level and product-level purchase representations.</skos:definition>
-    <skos:note xml:lang="en">Chain: placesOrder o containsProduct SubPropertyOf indirectlyPurchases</skos:note>
-    <ec:answersCompetencyQuestion>CQ17: What products can be inferred as purchased via order records?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-    <owl:propertyChainAxiom rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;placesOrder"/>
-      <rdf:Description rdf:about="&ec;containsProduct"/>
-    </owl:propertyChainAxiom>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;hasReviewedProduct">
-    <rdfs:label xml:lang="en">has reviewed product</rdfs:label>
-    <skos:definition xml:lang="en">Inferred via chain: Customer writesReview Review, Review reviewsProduct Product. Directly relates a Customer to products they have evaluated.</skos:definition>
-    <skos:note xml:lang="en">Chain: writesReview o reviewsProduct SubPropertyOf hasReviewedProduct</skos:note>
-    <ec:answersCompetencyQuestion>CQ18: Which products has a customer directly reviewed?</ec:answersCompetencyQuestion>
-    <rdfs:domain rdf:resource="&ec;Customer"/>
-    <rdfs:range rdf:resource="&ec;Product"/>
-    <owl:propertyChainAxiom rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;writesReview"/>
-      <rdf:Description rdf:about="&ec;reviewsProduct"/>
-    </owl:propertyChainAxiom>
-  </owl:ObjectProperty>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK J: owl:hasKey (OWL 2 only)
-       Semantics: Two Product individuals with the same hasSKU value
-       must be the same individual. Keys enforce identity from data.
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;Product">
-    <owl:hasKey rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;hasSKU"/>
-    </owl:hasKey>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Customer">
-    <owl:hasKey rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;hasCustomerID"/>
-    </owl:hasKey>
-  </owl:Class>
-
-  <owl:Class rdf:about="&ec;Order">
-    <owl:hasKey rdf:parseType="Collection">
-      <rdf:Description rdf:about="&ec;hasOrderID"/>
-    </owl:hasKey>
-  </owl:Class>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK K: owl:NegativePropertyAssertion (OWL 2 only)
-       Semantics: explicitly assert what is NOT true.
-       ============================================================ -->
-
-  <!-- Customer_Omar did NOT purchase MacBookPro (explicit closed-world assertion) -->
-  <owl:NegativePropertyAssertion>
-    <owl:sourceIndividual rdf:resource="&ec;Customer_Omar"/>
-    <owl:assertionProperty rdf:resource="&ec;purchases"/>
-    <owl:targetIndividual rdf:resource="&ec;MacBookPro"/>
-  </owl:NegativePropertyAssertion>
-
-  <!-- Customer_Lena did NOT place Order001 -->
-  <owl:NegativePropertyAssertion>
-    <owl:sourceIndividual rdf:resource="&ec;Customer_Lena"/>
-    <owl:assertionProperty rdf:resource="&ec;placesOrder"/>
-    <owl:targetIndividual rdf:resource="&ec;Order001"/>
-  </owl:NegativePropertyAssertion>
-
-  <!-- MacBookPro is NOT a gaming laptop (negative data assertion) -->
-  <owl:NegativePropertyAssertion>
-    <owl:sourceIndividual rdf:resource="&ec;MacBookPro"/>
-    <owl:assertionProperty rdf:resource="&ec;isGamingLaptop"/>
-    <owl:targetValue rdf:datatype="&xsd;boolean">true</owl:targetValue>
-  </owl:NegativePropertyAssertion>
-
-  <!-- GalaxyS24Ultra is NOT manufactured by Apple -->
-  <owl:NegativePropertyAssertion>
-    <owl:sourceIndividual rdf:resource="&ec;GalaxyS24Ultra"/>
-    <owl:assertionProperty rdf:resource="&ec;manufacturedBy"/>
-    <owl:targetIndividual rdf:resource="&ec;Apple"/>
-  </owl:NegativePropertyAssertion>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK L: owl:differentFrom (pairwise, beyond AllDifferent)
-       Adds explicit pairwise distinctions for key cross-group pairs.
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;Apple">
-    <owl:differentFrom rdf:resource="&ec;Customer_Ali"/>
-    <owl:differentFrom rdf:resource="&ec;Seller_TechZone"/>
-    <owl:differentFrom rdf:resource="&ec;MacBookPro"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;Seller_TechZone">
-    <owl:differentFrom rdf:resource="&ec;Customer_Ali"/>
-    <owl:differentFrom rdf:resource="&ec;Customer_Sara"/>
-    <owl:differentFrom rdf:resource="&ec;Customer_Omar"/>
-  </owl:NamedIndividual>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK M: owl:sameAs
-       Semantics: ROGZephyrus is the same individual as
-       ROGZephyrusG16 (an alias IRI used in an external catalogue).
-       ============================================================ -->
-
-  <owl:NamedIndividual rdf:about="&ec;ROGZephyrusG16_Alias">
-    <rdfs:label xml:lang="en">ROG Zephyrus G16 (Alias)</rdfs:label>
-    <rdfs:comment xml:lang="en">External catalogue IRI alias for ROGZephyrus. owl:sameAs asserts these two IRIs denote the same product individual.</rdfs:comment>
-    <owl:sameAs rdf:resource="&ec;ROGZephyrus"/>
-  </owl:NamedIndividual>
-
-  <owl:NamedIndividual rdf:about="&ec;AppleWatchSeries9_Alias">
-    <rdfs:label xml:lang="en">Apple Watch Series 9 (Retailer Alias)</rdfs:label>
-    <rdfs:comment xml:lang="en">Retailer catalogue alias for AppleWatch. Demonstrates owl:sameAs for identity merging across catalogue sources.</rdfs:comment>
-    <owl:sameAs rdf:resource="&ec;AppleWatch"/>
-  </owl:NamedIndividual>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK N: DataOneOf (enumerated data range)
-       Semantics: hasDeliveryStatus is restricted to a closed
-       enumeration of string values.
-       ============================================================ -->
-
-  <owl:DatatypeProperty rdf:about="&ec;hasDeliveryStatus">
-    <rdfs:range>
-      <rdfs:Datatype>
-        <owl:oneOf>
-          <rdf:Description>
-            <rdf:first rdf:datatype="&xsd;string">Processing</rdf:first>
-            <rdf:rest>
-              <rdf:Description>
-                <rdf:first rdf:datatype="&xsd;string">Shipped</rdf:first>
-                <rdf:rest>
-                  <rdf:Description>
-                    <rdf:first rdf:datatype="&xsd;string">Delivered</rdf:first>
-                    <rdf:rest>
-                      <rdf:Description>
-                        <rdf:first rdf:datatype="&xsd;string">Cancelled</rdf:first>
-                        <rdf:rest>
-                          <rdf:Description>
-                            <rdf:first rdf:datatype="&xsd;string">Returned</rdf:first>
-                            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                          </rdf:Description>
-                        </rdf:rest>
-                      </rdf:Description>
-                    </rdf:rest>
-                  </rdf:Description>
-                </rdf:rest>
-              </rdf:Description>
-            </rdf:rest>
-          </rdf:Description>
-        </owl:oneOf>
-      </rdfs:Datatype>
-    </rdfs:range>
-  </owl:DatatypeProperty>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK O: owl:oneOf (enumerated individual class)
-       Semantics: PlatformBrand is exactly the set of five known brands.
-       ============================================================ -->
-
-  <owl:Class rdf:about="&ec;PlatformBrand">
-    <rdfs:label xml:lang="en">PlatformBrand</rdfs:label>
-    <skos:definition xml:lang="en">The closed enumeration of brands currently active on the platform. Any new brand must be explicitly added to this set.</skos:definition>
-    <ec:answersCompetencyQuestion>CQ19: Which brands are registered on this platform?</ec:answersCompetencyQuestion>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:oneOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Apple"/>
-          <rdf:Description rdf:about="&ec;Samsung"/>
-          <rdf:Description rdf:about="&ec;Asus"/>
-          <rdf:Description rdf:about="&ec;Sony"/>
-          <rdf:Description rdf:about="&ec;Anker"/>
-        </owl:oneOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-  <!-- PlatformSeller: closed enumeration of registered sellers -->
-  <owl:Class rdf:about="&ec;PlatformSeller">
-    <rdfs:label xml:lang="en">PlatformSeller</rdfs:label>
-    <skos:definition xml:lang="en">The closed enumeration of sellers registered on the platform.</skos:definition>
-    <owl:equivalentClass>
-      <owl:Class>
-        <owl:oneOf rdf:parseType="Collection">
-          <rdf:Description rdf:about="&ec;Seller_TechZone"/>
-          <rdf:Description rdf:about="&ec;Seller_GadgetHub"/>
-        </owl:oneOf>
-      </owl:Class>
-    </owl:equivalentClass>
-  </owl:Class>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK P: owl:deprecated (annotation on obsolete elements)
-       Marks a property that has been superseded.
-       ============================================================ -->
-
-  <!-- hasDescription is deprecated in favour of rdfs:comment for literals -->
-  <owl:DatatypeProperty rdf:about="&ec;hasDescription">
-    <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-    <rdfs:comment xml:lang="en">Deprecated since v2.0. Use rdfs:comment for free-text descriptions. Retained for backward compatibility with v1.x consumers.</rdfs:comment>
-    <rdfs:seeAlso rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
-  </owl:DatatypeProperty>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK Q: rdfs:seeAlso on properties (cross-references)
-       ============================================================ -->
-
-  <owl:ObjectProperty rdf:about="&ec;purchases">
-    <rdfs:seeAlso rdf:resource="http://schema.org/buyer"/>
-    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#buys"/>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;sells">
-    <rdfs:seeAlso rdf:resource="http://schema.org/seller"/>
-    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#sells"/>
-  </owl:ObjectProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasPrice">
-    <rdfs:seeAlso rdf:resource="http://schema.org/price"/>
-    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#hasCurrencyValue"/>
-  </owl:DatatypeProperty>
-
-  <owl:DatatypeProperty rdf:about="&ec;hasAggregateRating">
-    <rdfs:seeAlso rdf:resource="http://schema.org/ratingValue"/>
-  </owl:DatatypeProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;manufacturedBy">
-    <rdfs:seeAlso rdf:resource="http://schema.org/manufacturer"/>
-    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#hasMakeAndModel"/>
-  </owl:ObjectProperty>
-
-  <owl:ObjectProperty rdf:about="&ec;belongsToCategory">
-    <rdfs:seeAlso rdf:resource="http://schema.org/category"/>
-    <rdfs:seeAlso rdf:resource="http://purl.org/goodrelations/v1#category"/>
-  </owl:ObjectProperty>
-
-
-  <!-- ============================================================
-       FEATURE BLOCK R: Additional SubObjectPropertyOf (explicit)
-       sells SubPropertyOf interactsWith (Seller extends to broader domain)
-       hasRelatedProduct SubPropertyOf isCompatibleWith
-       ============================================================ -->
-
-  <owl:ObjectProperty rdf:about="&ec;hasRelatedProduct">
-    <rdfs:subPropertyOf rdf:resource="&ec;isCompatibleWith"/>
-    <rdfs:comment xml:lang="en">hasRelatedProduct is a subproperty of isCompatibleWith: all related products are at minimum compatible, but not all compatible products are marketed as related.</rdfs:comment>
-  </owl:ObjectProperty>
 
 </rdf:RDF>
-
